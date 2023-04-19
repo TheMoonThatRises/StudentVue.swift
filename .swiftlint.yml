@@ -1,0 +1,12 @@
+included:
+  - Sources
+  - ./Package.swift
+disabled_rules:
+  todo
+line_length:
+  warning: 170
+  ignores_urls: true
+  ignores_function_declarations: true
+  ignores_comments: true
+  ignores_interpolated_strings: true
+
