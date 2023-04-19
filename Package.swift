@@ -1,4 +1,4 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 5.4
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "StudentVue",
     platforms: [
-        .iOS(.v13),
-        .macOS(.v13)
+        .iOS(.v11),
+        .macOS(.v11)
     ],
     products: [
         .library(
