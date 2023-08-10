@@ -55,3 +55,4 @@ try await client.scraper.logout() // Log out of StudentVue
 ## Library Used
 
 - [SWXMLHash](https://github.com/drmohundro/SWXMLHash)
+- [SwiftSoup](https://github.com/scinfu/SwiftSoup)
