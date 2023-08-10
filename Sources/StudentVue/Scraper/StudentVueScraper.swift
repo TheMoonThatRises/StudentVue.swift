@@ -155,7 +155,6 @@ class StudentVueScraper {
         return URLSessionResponse(data: response.0, response: response.1 as? HTTPURLResponse)
     }
 
-
     /// Scraper call with specific error messages
     ///
     /// - Parameters:
