@@ -15,13 +15,15 @@ let package = Package(
             targets: ["StudentVue"])
     ],
     dependencies: [
-        .package(url: "https://github.com/drmohundro/SWXMLHash", from: "7.0.1")
+        .package(url: "https://github.com/drmohundro/SWXMLHash", from: "7.0.1"),
+        .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.6.0")
     ],
     targets: [
         .target(
             name: "StudentVue",
             dependencies: [
-                "SWXMLHash"
+                "SWXMLHash",
+                "SwiftSoup"
             ])
     ],
     swiftLanguageVersions: [.v5]

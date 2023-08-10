@@ -8,7 +8,7 @@ Swift library for interacting with StudentVue's api. This project was heavily in
 ## Installation
 
 ```swift
-.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.0.1")
+.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.1.0")
 ```
 
 ## Basic usage
@@ -23,10 +23,10 @@ import StudentVue
 let client = StudentVue(domain: "something.edupoint.com", username: "123456789", password: "password")
 ```
 
-With the client initialized, you can access information by using the provided functions such as `getGradeBook`, `getClassSchedule`, `getSchoolInfo`, and many more. If one of the functions fails to parse or you want to access information in which a data structure is not created, you can call the `makeServiceRequest` and parse the XML manually.
+With the client initialized, you can access information from the official api by using the provided functions such as `getGradeBook`, `getClassSchedule`, `getSchoolInfo`, and many more. If one of the functions fails to parse or you want to access information in which a data structure is not created, you can call the `makeServiceRequest` and parse the XML manually.
 
 ```swift
-let gradebook = client.getGradeBook()
+let gradebook = try await client.api.getGradeBook()
 ```
 
 ### Static functions
@@ -34,10 +34,15 @@ let gradebook = client.getGradeBook()
 For some functions, logging in is not required, such as getting district zip codes
 
 ```swift
+let districts = try await client.api.getDistricts(zip: "a zip code")
+```
 
-import StudentVue
+You can also use the scraper which gives more information and functionality, but is not fully implemented. With the following example you can assess whether or not a username and password combination are valid. The line below that will you out of StudentVue. More and easier functionality will be added to the scraper in the future.
 
-let districts = StudentVue.getDistricts(zip: "a zip code")
+```swift
+try await client.scraper.login() // Log into StudentVue
+
+try await client.scraper.logout() // Log out of StudentVue
 ```
 
 ## Todo List

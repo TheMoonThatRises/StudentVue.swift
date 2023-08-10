@@ -12,8 +12,8 @@ struct SoapXML {
     var password: String
     var skipLoginLog: Bool
     var parent: Bool
-    var webServiceHandleName: StudentVue.WebServices
-    var methodName: StudentVue.Methods
+    var webServiceHandleName: StudentVueApi.WebServices
+    var methodName: StudentVueApi.Methods
     var paramStr: [String: [String: String]]
 
     private var formattedParamStr: String {
