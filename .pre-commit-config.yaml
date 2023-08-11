@@ -1,0 +1,15 @@
+repos:
+  - repo: https://github.com/realm/SwiftLint
+    rev: 0.52.4
+    hooks:
+      - id: swiftlint
+        entry: swiftlint --strict
+  - repo: local
+    hooks:
+      - id: swift-build
+        name: swift-build
+        entry: swift build
+        language: system
+        types: [swift]
+        pass_filenames: false
+
