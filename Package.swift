@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "StudentVue",
     platforms: [
-        .iOS(.v11),
+        .iOS(.v13),
         .macOS(.v11)
     ],
     products: [
