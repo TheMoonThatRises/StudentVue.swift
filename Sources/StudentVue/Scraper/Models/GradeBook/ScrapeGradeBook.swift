@@ -150,6 +150,5 @@ struct ScrapeGradeBook {
         }
 
         classes.sort(by: { $0.period < $1.period })
-        print(classes)
     }
 }

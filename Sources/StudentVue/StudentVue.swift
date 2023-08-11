@@ -15,9 +15,7 @@ class StudentVue {
     // Client domain for other files to use
     private static var interalDomain = ""
     public static var domain: String {
-        get {
-            StudentVue.interalDomain
-        }
+        StudentVue.interalDomain
     }
 
     /// Initializes a new StudentVue client with user credientials

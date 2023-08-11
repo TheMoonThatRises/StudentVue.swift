@@ -2,7 +2,8 @@ included:
   - Sources
   - ./Package.swift
 disabled_rules:
-  todo
+  - todo
+  - function_body_length
 line_length:
   warning: 170
   ignores_urls: true
