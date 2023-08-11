@@ -24,7 +24,8 @@ let package = Package(
             dependencies: [
                 "SWXMLHash",
                 "SwiftSoup"
-            ])
+            ]
+        )
     ],
     swiftLanguageVersions: [.v5]
 )

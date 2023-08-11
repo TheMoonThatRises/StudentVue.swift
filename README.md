@@ -8,14 +8,14 @@ Swift library for interacting with StudentVue's api. This project was heavily in
 ## Installation
 
 ```swift
-.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.1.0")
+.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.1.1")
 ```
 
 ## Basic usage
 
 ### Logging in as a student
 
-To create a client instance, use
+To create a client instance, use:
 
 ```swift
 import StudentVue
@@ -31,7 +31,7 @@ let gradebook = try await client.api.getGradeBook()
 
 ### Static functions
 
-For some functions, logging in is not required, such as getting district zip codes
+For some functions, logging in is not required, such as getting district zip codes.
 
 ```swift
 let districts = try await client.api.getDistricts(zip: "a zip code")
@@ -40,9 +40,15 @@ let districts = try await client.api.getDistricts(zip: "a zip code")
 You can also use the scraper which gives more information and functionality, but is not fully implemented. With the following example you can assess whether or not a username and password combination are valid. The line below that will you out of StudentVue. More and easier functionality will be added to the scraper in the future.
 
 ```swift
-try await client.scraper.login() // Log into StudentVue
+try await client.scraper.login() // Log into StudentVue. NOTE: login returns gradebook html
 
-try await client.scraper.logout() // Log out of StudentVue
+try await client.scraper.logout() // Log out of StudentVue. Returns boolean indicating success
+```
+
+You can use the built-in scraper parser to parse specific endpoints. These classes typically start with the word `Scrape` and has the `html` parameter for html to parse. Some will include `client` which is of class `StudentVue` which may be used to access additional helper pieces of information.
+
+```swift
+try await ScrapeGradeBook(html: try await client.scraper.login(), client: client) // Returns gradebook in an array of `ClassData`
 ```
 
 ## Todo List
@@ -51,6 +57,7 @@ try await client.scraper.logout() // Log out of StudentVue
 - [ ] More complete structures for returned data
     - [ ] Use the WSDL file to help with the data structure
 - [ ] Use a proper SOAP handler instead of the "hacky" solution
+- [ ] More complete scraper parser - In progress
 
 ## Library Used
 

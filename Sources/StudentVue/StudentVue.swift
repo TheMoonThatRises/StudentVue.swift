@@ -12,6 +12,13 @@ class StudentVue {
     public let api: StudentVueApi
     // Scrapes the StudentVue website
     public let scraper: StudentVueScraper
+    // Client domain for other files to use
+    private static var interalDomain = ""
+    public static var domain: String {
+        get {
+            StudentVue.interalDomain
+        }
+    }
 
     /// Initializes a new StudentVue client with user credientials
     ///
@@ -22,6 +29,7 @@ class StudentVue {
     ///
     /// - Returns: A new StudentVue client with api and scraper
     init(domain: String, username: String, password: String) {
+        StudentVue.interalDomain = domain
         self.api = StudentVueApi(domain: domain, username: username, password: password)
         self.scraper = StudentVueScraper(domain: domain, username: username, password: password)
     }
