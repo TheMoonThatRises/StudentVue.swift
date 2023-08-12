@@ -7,11 +7,11 @@
 
 import Foundation
 
-class StudentVue {
+public class StudentVue {
     // Uses the official StudentVue api endpoint
-    public let api: StudentVueApi
+    let api: StudentVueApi
     // Scrapes the StudentVue website
-    public let scraper: StudentVueScraper
+    let scraper: StudentVueScraper
     // Client domain for other files to use
     private static var interalDomain = ""
     public static var domain: String {
@@ -26,7 +26,7 @@ class StudentVue {
     ///   - password: The password of the student's information to access
     ///
     /// - Returns: A new StudentVue client with api and scraper
-    init(domain: String, username: String, password: String) {
+    public init(domain: String, username: String, password: String) {
         StudentVue.interalDomain = domain
         self.api = StudentVueApi(domain: domain, username: username, password: password)
         self.scraper = StudentVueScraper(domain: domain, username: username, password: password)
