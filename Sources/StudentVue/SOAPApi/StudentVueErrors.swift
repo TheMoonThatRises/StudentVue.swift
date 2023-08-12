@@ -1,6 +1,6 @@
 //
-//  Errors.swift
-//  
+//  ApiErrors.swift
+//
 //
 //  Created by TheMoonThatRises on 4/11/23.
 //

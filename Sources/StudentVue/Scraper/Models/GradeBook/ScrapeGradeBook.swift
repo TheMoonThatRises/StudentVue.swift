@@ -33,7 +33,7 @@ struct ScrapeGradeBook {
                         .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
 
                     let loadControlData = try JSONDecoder().decode(LoadControlData.self,
-                                                                            from: try button?.attr("data-focus")
+                                                                   from: try button?.attr("data-focus")
                         .data(using: .utf8) ?? Data())
                     currentClass.period = Int(periodAndName?[0] ?? "") ?? 0
                     currentClass.name = periodAndName?[1] ?? ""

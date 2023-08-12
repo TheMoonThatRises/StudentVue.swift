@@ -1,5 +1,5 @@
 //
-//  Class.swift
+//  ClassData.swift
 //  
 //
 //  Created by TheMoonThatRises on 3/10/23.
