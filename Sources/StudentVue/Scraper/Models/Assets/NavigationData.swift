@@ -8,32 +8,34 @@
 import Foundation
 import SwiftSoup
 
-struct NavigationDataItem: Decodable {
-    var moduleIcon: String
-    var activeClass: String
-    var url: String
-    var description: String
-    var notificationIcon: String
-    var iconExists: Bool
-    var enabled: Bool
+extension StudentVueScraper {
+    struct NavigationDataItem: Decodable {
+        var moduleIcon: String
+        var activeClass: String
+        var url: String
+        var description: String
+        var notificationIcon: String
+        var iconExists: Bool
+        var enabled: Bool
+    }
+
+    struct NavigationDataStudent: Decodable {
+        var agu: String
+        var name: String
+        var sisNumber: String
+        var school: String
+        var phone: String
+        var photo: String
+        var current: Bool
+    }
+
+    struct NavigationData: Decodable {
+        var items: [NavigationDataItem]
+        var students: [NavigationDataStudent]
+    }
 }
 
-struct NavigationDataStudent: Decodable {
-    var agu: String
-    var name: String
-    var sisNumber: String
-    var school: String
-    var phone: String
-    var photo: String
-    var current: Bool
-}
-
-struct NavigationData: Decodable {
-    var items: [NavigationDataItem]
-    var students: [NavigationDataStudent]
-}
-
-extension NavigationData {
+extension StudentVueScraper.NavigationData {
     init?(html: String) throws {
         let doc = try SwiftSoup.parse(html)
 
@@ -48,7 +50,7 @@ extension NavigationData {
            let navigationData = String(navigationString[parenIdx...])
             .dropLast()
             .data(using: .utf8) {
-            self = try JSONDecoder().decode(NavigationData.self, from: navigationData)
+            self = try JSONDecoder().decode(StudentVueScraper.NavigationData.self, from: navigationData)
         } else {
             return nil
         }

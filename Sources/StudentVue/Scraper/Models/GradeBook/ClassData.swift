@@ -8,49 +8,51 @@
 import Foundation
 import SwiftSoup
 
-struct PointStruct {
-    var score: Double
-    var outOf: Double
+extension StudentVueScraper {
+    struct PointStruct {
+        var score: Double
+        var outOf: Double
+    }
+
+    struct ClassGrades {
+        var mark: String
+        var count: Int
+    }
+
+    struct GradeHistory {
+        var date: Date
+        var score: Int
+    }
+
+    struct Weight {
+        var name: String
+        var weight: Int
+        var percent: Double
+        var percentOfTotal: Double
+    }
+
+    public struct ClassData {
+        var guid: String
+        var teacher: String
+        var period: Int
+        var name: String
+        var room: String
+        var lastUpdated: Date
+        var currentMark: String
+        var currentScore: Double
+        var missingAssignments: Int
+        var totalAssignments: Int
+        var upcomingAssignments: Int
+        var highestScore: Int
+        var lowestScore: Int
+        var weights: [Weight]
+        var history: [GradeHistory]
+        var assignments: [GradeData]
+        var classGrades: [ClassGrades]
+    }
 }
 
-struct ClassGrades {
-    var mark: String
-    var count: Int
-}
-
-struct GradeHistory {
-    var date: Date
-    var score: Int
-}
-
-struct Weight {
-    var name: String
-    var weight: Int
-    var percent: Double
-    var percentOfTotal: Double
-}
-
-struct ClassData {
-    var guid: String
-    var teacher: String
-    var period: Int
-    var name: String
-    var room: String
-    var lastUpdated: Date
-    var currentMark: String
-    var currentScore: Double
-    var missingAssignments: Int
-    var totalAssignments: Int
-    var upcomingAssignments: Int
-    var highestScore: Int
-    var lowestScore: Int
-    var weights: [Weight]
-    var history: [GradeHistory]
-    var assignments: [GradeData]
-    var classGrades: [ClassGrades]
-}
-
-extension ClassData {
+extension StudentVueScraper.ClassData {
     init() {
         self.init(guid: "",
                   teacher: "",
@@ -71,21 +73,21 @@ extension ClassData {
                   classGrades: [])
     }
 
-    var maxHistoryScore: Int {
+    public var maxHistoryScore: Int {
         (history.max(by: { $0.score < $1.score })?.score ?? 90) + 10
     }
 
-    var minHistoryScore: Int {
+    public var minHistoryScore: Int {
         (history.max(by: { $0.score > $1.score })?.score ?? 60) - 10
     }
 
-    var largestWeightValue: Double {
+    public var largestWeightValue: Double {
         max(weights.last?.computedWeight ?? 0.0, Double(weights.last?.weight ?? 0)) + 15
     }
 }
 
-extension Weight {
-    var computedWeight: Double {
+extension StudentVueScraper.Weight {
+    public var computedWeight: Double {
         Double(weight) * (percent / 100)
     }
 }

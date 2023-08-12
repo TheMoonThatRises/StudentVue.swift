@@ -8,15 +8,15 @@
 import Foundation
 import SWXMLHash
 
-class StudentVueApi {
+public class StudentVueApi {
     /// Endpoints that StudentVue uses for it's API. `HDInfoCommunication` is only used within `support.edupoint.com`
-    enum Endpoints: String, Equatable {
+    public enum Endpoints: String, Equatable {
         case pxpCommunication = "PXPCommunication"
         case hdInfoCommunication = "HDInfoCommunication"
     }
 
     /// SOAP methods that StudentVue uses
-    enum Methods: String {
+    public enum Methods: String {
         case getMatchingDistrictList = "GetMatchingDistrictList"
         case getPXPMessages = "GetPXPMessages"
         case studentCalendar = "StudentCalendar"
@@ -36,7 +36,7 @@ class StudentVueApi {
     }
 
     /// Web services that StudentVue uses. `HDInfoServices` is only used to access the`HDInfoCommunication` endpoint
-    enum WebServices: String {
+    public enum WebServices: String {
         case pxpWebServices = "PXPWebServices"
         case hdInfoServices = "HDInfoServices"
     }
@@ -60,7 +60,7 @@ class StudentVueApi {
     ///   - password: The password of the student's information to access
     ///
     /// - Returns: A new StudentVueApi client
-    init(domain: String, username: String, password: String) {
+    public init(domain: String, username: String, password: String) {
         self.url = "https://\(domain)/Service/"
 
         self.username = username

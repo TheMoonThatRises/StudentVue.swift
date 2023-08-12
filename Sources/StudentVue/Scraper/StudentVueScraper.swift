@@ -7,18 +7,7 @@
 
 import Foundation
 
-struct URLSessionResponse {
-    var data: Data?
-    var response: HTTPURLResponse?
-}
-
-struct HTMLURLSessionResponse {
-    var html: String
-    var response: HTTPURLResponse
-    var urlSessionResponse: URLSessionResponse
-}
-
-class StudentVueScraper {
+public class StudentVueScraper {
     public let domain: String
 
     public let userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) " +
@@ -28,8 +17,19 @@ class StudentVueScraper {
     public let username: String
     public let password: String
 
+    public struct URLSessionResponse {
+        var data: Data?
+        var response: HTTPURLResponse?
+    }
+
+    public struct HTMLURLSessionResponse {
+        var html: String
+        var response: HTTPURLResponse
+        var urlSessionResponse: URLSessionResponse
+    }
+
     // All of StudentVue's endpoint
-    enum Endpoints: String {
+    public enum Endpoints: String {
         case assessment = "/PXP2_Assessment.aspx"
         case attendence = "/PXP2_Attendance.aspx"
         case calendar = "/PXP2_Calendar.aspx"
@@ -52,11 +52,11 @@ class StudentVueScraper {
         case loadControl = "/service/PXP2Communication.asmx/LoadControl"
     }
 
-    enum HTTPMethods: String {
+    public enum HTTPMethods: String {
         case get, post
     }
 
-    enum HeaderType {
+    public enum HeaderType {
         case scrape, api
     }
 
@@ -177,11 +177,11 @@ class StudentVueScraper {
                                      urlParams: urlParams)
 
         guard let httpResponse = response.response, httpResponse.statusCode == 200 else {
-            throw ScraperErrors.responseNot200
+            throw StudentVueErrors.responseNot200
         }
 
         guard let data = response.data, let html = String(data: data, encoding: .utf8) else {
-            throw ScraperErrors.emptyData
+            throw StudentVueErrors.emptyData
         }
 
         try ErrorPage.parse(html: html)
@@ -205,11 +205,11 @@ class StudentVueScraper {
     /// - Returns: The gradebook HTML if successful
     public func login() async throws -> HTMLURLSessionResponse {
         guard !username.isEmpty else {
-            throw ScraperErrors.noUsername
+            throw StudentVueErrors.noUsername
         }
 
         guard !password.isEmpty else {
-            throw ScraperErrors.noPassword
+            throw StudentVueErrors.noPassword
         }
 
         let vueState = try await generateSessionId()

@@ -10,4 +10,8 @@ line_length:
   ignores_function_declarations: true
   ignores_comments: true
   ignores_interpolated_strings: true
+nesting:
+  type_level:
+    warning: 3
+    error: 6
 

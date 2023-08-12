@@ -8,7 +8,7 @@ Swift library for interacting with StudentVue's api. This project was heavily in
 ## Installation
 
 ```swift
-.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.1.2")
+.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.1.3")
 ```
 
 ## Basic usage
@@ -45,10 +45,10 @@ try await client.scraper.login() // Log into StudentVue. NOTE: login returns gra
 try await client.scraper.logout() // Log out of StudentVue. Returns boolean indicating success
 ```
 
-You can use the built-in scraper parser to parse specific endpoints. These classes typically start with the word `Scrape` and has the `html` parameter for html to parse. Some will include `client` which is of class `StudentVue` which may be used to access additional helper pieces of information.
+You can use the built-in scraper parser to parse specific endpoints. These structs are in the `StudentVueScraper` class and has the `html` parameter for html to parse. Some will include `client` which is of class `StudentVue` which may be used to access additional helper pieces of information.
 
 ```swift
-try await ScrapeGradeBook(html: try await client.scraper.login(), client: client) // Returns gradebook in an array of `ClassData`
+try await StudentVueScraper.GradeBook(html: try await client.scraper.login(), client: client) // Returns gradebook in an array of `ClassData`
 ```
 
 ## Todo List

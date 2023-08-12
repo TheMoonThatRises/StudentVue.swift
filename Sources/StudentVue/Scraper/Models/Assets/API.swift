@@ -7,28 +7,30 @@
 
 import Foundation
 
-struct APIData: Decodable {
-    var html: String
-}
-
-struct APIResult: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case type = "__type"
-        case error = "Error"
-        case data = "Data"
-        case dataType = "DataType"
+extension StudentVueScraper {
+    struct APIData: Decodable {
+        var html: String
     }
 
-    var type: String
-    var error: String?
-    var data: APIData
-    var dataType: String
-}
+    struct APIResult: Decodable {
+        enum CodingKeys: String, CodingKey {
+            case type = "__type"
+            case error = "Error"
+            case data = "Data"
+            case dataType = "DataType"
+        }
 
-struct API: Decodable {
-    enum CodingKeys: String, CodingKey {
-        case result = "d"
+        var type: String
+        var error: String?
+        var data: APIData
+        var dataType: String
     }
 
-    var result: APIResult
+    struct API: Decodable {
+        enum CodingKeys: String, CodingKey {
+            case result = "d"
+        }
+
+        var result: APIResult
+    }
 }

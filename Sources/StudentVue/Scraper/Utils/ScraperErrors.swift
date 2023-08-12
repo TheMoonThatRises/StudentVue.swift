@@ -6,19 +6,20 @@
 //
 
 import Foundation
-
-enum ScraperErrors: Error {
-    case emptyData
-    case incorrectPassword
-    case invalidUsername
-    case noPassword
-    case noUsername
-    case noCredentials
-    case responseNot200
-    case unknown(message: String?)
+extension StudentVueScraper {
+    enum StudentVueErrors: Error {
+        case emptyData
+        case incorrectPassword
+        case invalidUsername
+        case noPassword
+        case noUsername
+        case noCredentials
+        case responseNot200
+        case unknown(message: String?)
+    }
 }
 
-extension ScraperErrors: LocalizedError {
+extension StudentVueScraper.StudentVueErrors: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .emptyData:
