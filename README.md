@@ -8,7 +8,7 @@ Swift library for interacting with StudentVue's api. This project was heavily in
 ## Installation
 
 ```swift
-.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.1.3")
+.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.1.4")
 ```
 
 ## Basic usage
