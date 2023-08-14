@@ -8,9 +8,9 @@
 import Foundation
 
 public class StudentVueScraper {
-    public let domain: String
+    internal let domain: String
 
-    public let userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) " +
+    internal let userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) " +
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15"
     public let base: String
 
@@ -60,6 +60,8 @@ public class StudentVueScraper {
         case scrape, api
     }
 
+    internal let scraperSession: URLSession
+
     /// Initializes a new StudentVueScraper client with user credientials
     ///
     /// - Parameters:
@@ -74,6 +76,20 @@ public class StudentVueScraper {
         self.base = "https://\(self.domain)"
         self.username = username
         self.password = password
+
+        let sessionConfig = URLSessionConfiguration.default
+
+        sessionConfig.httpAdditionalHeaders = [
+            "Accept-Language": "en-US,en;q=0.9",
+            "Sec-Fetch-Site": "same-origin",
+            "User-Agent": userAgent,
+            "Host": domain
+        ]
+        sessionConfig.allowsCellularAccess = false
+        sessionConfig.httpShouldSetCookies = true
+        sessionConfig.httpCookieAcceptPolicy = .always
+
+        self.scraperSession = URLSession(configuration: sessionConfig)
     }
 
     /// Build the header of the request with the corresponding type
@@ -103,15 +119,10 @@ public class StudentVueScraper {
 
         request.setValue(accept, forHTTPHeaderField: "Accept")
         request.setValue(contentType, forHTTPHeaderField: "Content-Type")
-        request.setValue("en-US,en;q=0.9", forHTTPHeaderField: "Accept-Langauge")
 
         request.setValue(dest, forHTTPHeaderField: "Sec-Fetch-Dest")
         request.setValue(mode, forHTTPHeaderField: "Sec-Fetch-Mode")
-        request.setValue("same-origin", forHTTPHeaderField: "Sec-Fetch-Site")
 
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-
-        request.setValue(domain, forHTTPHeaderField: "Host")
         request.setValue("\(base)\(Endpoints.login.rawValue)", forHTTPHeaderField: "Origin")
         request.setValue("\(base)\(Endpoints.login.rawValue)", forHTTPHeaderField: "Referer")
     }
@@ -150,7 +161,7 @@ public class StudentVueScraper {
 
         buildHeaders(request: &request, headerType: headerType)
 
-        let response = try await URLSession.shared.data(for: request)
+        let response = try await scraperSession.data(for: request)
 
         return URLSessionResponse(data: response.0, response: response.1 as? HTTPURLResponse)
     }

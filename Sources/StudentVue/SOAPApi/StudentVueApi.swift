@@ -42,12 +42,12 @@ public class StudentVueApi {
     }
 
     /// The base URL to access StudentVue's APIs
-    private let url: String
+    internal let url: String
 
     /// The username to log into StudentVue's API
-    private var username: String
+    internal var username: String
     /// The password to log into StudentVue's API/
-    private var password: String
+    internal var password: String
 
     /// Creates a new URLSession for the library to use
     private let session: URLSession
@@ -76,8 +76,8 @@ public class StudentVueApi {
             "Accept-Encoding": "gzip, deflate"
         ]
         sessionConfig.allowsCellularAccess = true // The API only sends text responses
-        sessionConfig.httpShouldSetCookies = true
-        sessionConfig.httpCookieAcceptPolicy = .always
+        sessionConfig.httpShouldSetCookies = false
+        sessionConfig.httpCookieAcceptPolicy = .never
 
         self.session = URLSession(configuration: sessionConfig)
     }
