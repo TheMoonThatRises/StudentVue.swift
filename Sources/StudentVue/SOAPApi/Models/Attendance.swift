@@ -10,16 +10,16 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct AbsencePeriod: XMLObjectDeserialization {
-        var period: Int
-        var name: String
-        var reason: String
-        var course: String
-        var teacher: String
-        var teacherEmail: String
-        var iconName: String
-        var schoolName: String
-        var teacherGU: String
-        var orgYearGU: String
+        public var period: Int
+        public var name: String
+        public var reason: String
+        public var course: String
+        public var teacher: String
+        public var teacherEmail: String
+        public var iconName: String
+        public var schoolName: String
+        public var teacherGU: String
+        public var orgYearGU: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> AbsencePeriod {
             AbsencePeriod(period: try element.value(ofAttribute: "Number"),
@@ -36,13 +36,13 @@ extension StudentVueApi {
     }
 
     public struct Absence: XMLObjectDeserialization {
-        var date: Date
-        var reason: String
-        var note: String
-        var dailyIconName: String
-        var codeAllDayReasonType: String
-        var codeAllDayDescription: String
-        var absencePeriods: [AbsencePeriod]
+        public var date: Date
+        public var reason: String
+        public var note: String
+        public var dailyIconName: String
+        public var codeAllDayReasonType: String
+        public var codeAllDayDescription: String
+        public var absencePeriods: [AbsencePeriod]
 
         public static func deserialize(_ element: XMLIndexer) throws -> Absence {
             Absence(date: try element.value(ofAttribute: "AbsenceDate"),
@@ -56,8 +56,8 @@ extension StudentVueApi {
     }
 
     public struct AttendancePeriodTotal: XMLObjectDeserialization {
-        var period: Int
-        var total: Int
+        public var period: Int
+        public var total: Int
 
         public static func deserialize(_ element: XMLIndexer) throws -> AttendancePeriodTotal {
             AttendancePeriodTotal(period: try element.value(ofAttribute: "Number"),
@@ -66,18 +66,18 @@ extension StudentVueApi {
     }
 
     public struct Attendance: XMLObjectDeserialization {
-        var type: String // TODO: Find other types
-        var startPeriod: Int
-        var endPeriod: Int
-        var periodCount: Int
-        var schoolName: String
-        var absences: [Absence]
-        var totalExcused: [AttendancePeriodTotal]
-        var totalTardies: [AttendancePeriodTotal]
-        var totalUnexcused: [AttendancePeriodTotal]
-        var totalActivities: [AttendancePeriodTotal]
-        var totalUnexcusedTardies: [AttendancePeriodTotal]
-        var concurrentSchoolsLists: String? // TODO: Find data type/structure
+        public var type: String // TODO: Find other types
+        public var startPeriod: Int
+        public var endPeriod: Int
+        public var periodCount: Int
+        public var schoolName: String
+        public var absences: [Absence]
+        public var totalExcused: [AttendancePeriodTotal]
+        public var totalTardies: [AttendancePeriodTotal]
+        public var totalUnexcused: [AttendancePeriodTotal]
+        public var totalActivities: [AttendancePeriodTotal]
+        public var totalUnexcusedTardies: [AttendancePeriodTotal]
+        public var concurrentSchoolsLists: String? // TODO: Find data type/structure
 
         public static func deserialize(_ element: XMLIndexer) throws -> Attendance {
             let attendance = element["Attendance"]

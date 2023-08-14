@@ -7,14 +7,16 @@
 
 import Foundation
 
-enum StudentVueErrors: LocalizedError {
-    case unreachableURL(String)
-    case emptyResponse
-    case clientNotIntialised
-    case soapError(String)
+extension StudentVueApi {
+    enum StudentVueErrors: LocalizedError {
+        case unreachableURL(String)
+        case emptyResponse
+        case clientNotIntialised
+        case soapError(String)
+    }
 }
 
-extension StudentVueErrors {
+extension StudentVueApi.StudentVueErrors {
     var errorDescription: String? {
         switch self {
         case .unreachableURL(let string):

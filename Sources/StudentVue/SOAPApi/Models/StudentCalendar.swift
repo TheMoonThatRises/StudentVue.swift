@@ -10,16 +10,16 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct CalendarEventList: XMLObjectDeserialization {
-        var date: Date
-        var title: String
-        var icon: String?
-        var agu: String?
-        var dayType: String
-        var startTime: String
-        var link: String?
-        var dgu: String?
-        var viewType: Int?
-        var addLinkData: String?
+        public var date: Date
+        public var title: String
+        public var icon: String?
+        public var agu: String?
+        public var dayType: String
+        public var startTime: String
+        public var link: String?
+        public var dgu: String?
+        public var viewType: Int?
+        public var addLinkData: String?
 
         public static func deserialize(_ element: XMLIndexer) throws -> CalendarEventList {
             CalendarEventList(date: try element.value(ofAttribute: "Date"),
@@ -36,11 +36,11 @@ extension StudentVueApi {
     }
 
     public struct StudentCalendar: XMLObjectDeserialization {
-        var schoolStartDate: Date
-        var schoolEndDate: Date
-        var monthStartDate: Date
-        var monthEndDate: Date
-        var eventLists: [CalendarEventList]
+        public var schoolStartDate: Date
+        public var schoolEndDate: Date
+        public var monthStartDate: Date
+        public var monthEndDate: Date
+        public var eventLists: [CalendarEventList]
 
         public static func deserialize(_ element: XMLIndexer) throws -> StudentCalendar {
             let calendar = element["CalendarListing"]

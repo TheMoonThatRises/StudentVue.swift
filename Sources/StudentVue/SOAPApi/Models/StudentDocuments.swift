@@ -10,12 +10,12 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct StudentDocumentData: XMLObjectDeserialization {
-        var documentGU: String
-        var documentFileName: String
-        var documentDate: Date
-        var documentType: String
-        var studentGU: String
-        var documentComment: String
+        public var documentGU: String
+        public var documentFileName: String
+        public var documentDate: Date
+        public var documentType: String
+        public var studentGU: String
+        public var documentComment: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> StudentDocumentData {
             StudentDocumentData(documentGU: try element.value(ofAttribute: "DocumentGU"),
@@ -28,9 +28,9 @@ extension StudentVueApi {
     }
 
     public struct StudentDocuments: XMLObjectDeserialization {
-        var studentGU: String
-        var studentSSY: String
-        var studentDocumentDatas: [StudentDocumentData]
+        public var studentGU: String
+        public var studentSSY: String
+        public var studentDocumentDatas: [StudentDocumentData]
 
         public static func deserialize(_ element: XMLIndexer) throws -> StudentDocuments {
             let documents = element["StudentDocuments"]
@@ -42,13 +42,13 @@ extension StudentVueApi {
     }
 
     public struct DocumentData: XMLObjectDeserialization {
-        var documentGU: String
-        var studentGU: String
-        var fileName: String
-        var category: String
-        var notes: String
-        var docType: String
-        var base64Code: String
+        public var documentGU: String
+        public var studentGU: String
+        public var fileName: String
+        public var category: String
+        public var notes: String
+        public var docType: String
+        public var base64Code: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> DocumentData {
             DocumentData(documentGU: try element.value(ofAttribute: "DocumentGU"),
@@ -62,8 +62,8 @@ extension StudentVueApi {
     }
 
     public struct StudentAttachedDocumentData: XMLObjectDeserialization {
-        var documentCategoryLookups: [String]? // TODO: Find data type/structure
-        var documentDatas: [DocumentData]
+        public var documentCategoryLookups: [String]? // TODO: Find data type/structure
+        public var documentDatas: [DocumentData]
 
         public static func deserialize(_ element: XMLIndexer) throws -> StudentAttachedDocumentData {
             return StudentAttachedDocumentData(documentDatas: try element["StudentAttachedDocumentData"]["DocumentDatas"]["DocumentData"].value())

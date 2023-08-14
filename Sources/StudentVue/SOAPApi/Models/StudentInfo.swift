@@ -10,12 +10,12 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct EmergencyContact: XMLObjectDeserialization {
-        var name: String
-        var relationship: String
-        var homePhone: String
-        var workPhone: String
-        var otherPhone: String
-        var mobilePhone: String
+        public var name: String
+        public var relationship: String
+        public var homePhone: String
+        public var workPhone: String
+        public var otherPhone: String
+        public var mobilePhone: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> EmergencyContact {
             EmergencyContact(name: try element.value(ofAttribute: "Name"),
@@ -28,10 +28,10 @@ extension StudentVueApi {
     }
 
     public struct PhysicianInfo: XMLObjectDeserialization {
-        var name: String
-        var hospital: String
-        var phone: String
-        var extn: String
+        public var name: String
+        public var hospital: String
+        public var phone: String
+        public var extn: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> PhysicianInfo {
             PhysicianInfo(name: try element.value(ofAttribute: "Name"),
@@ -42,10 +42,10 @@ extension StudentVueApi {
     }
 
     public struct DentistInfo: XMLObjectDeserialization {
-        var name: String
-        var office: String
-        var phone: String
-        var extn: String
+        public var name: String
+        public var office: String
+        public var phone: String
+        public var extn: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> DentistInfo {
             DentistInfo(name: try element.value(ofAttribute: "Name"),
@@ -56,12 +56,12 @@ extension StudentVueApi {
     }
 
     public struct UserDefinedItem: XMLObjectDeserialization {
-        var itemLabel: String
-        var itemType: String
-        var sourceObject: String
-        var sourceElement: String
-        var vcid: String
-        var value: String
+        public var itemLabel: String
+        public var itemType: String
+        public var sourceObject: String
+        public var sourceElement: String
+        public var vcid: String
+        public var value: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> UserDefinedItem {
             UserDefinedItem(itemLabel: try element.value(ofAttribute: "ItemLabel"),
@@ -74,31 +74,31 @@ extension StudentVueApi {
     }
 
     public struct StudentInfo: XMLObjectDeserialization {
-        var lockerInfoRecords: String? // TODO: Find data type
-        var formattedName: String
-        var permID: String
-        var gender: String
-        var grade: String
-        var address: String
-        var lastNameGoesBy: String?
-        var nickname: String?
-        var birthDate: Date
-        var email: String
-        var phone: String
-        var homeLanguage: String
-        var currentSchool: String
-        var track: String? // TODO: Find data type
-        var homeRoomTeacher: String
-        var homeRoomTeacherEmail: String
-        var homeRoomTeacherGU: String
-        var orgYearGU: String
-        var homeRoom: String
-        var counselorName: String
-        var photo: String?
-        var emergencyContacts: [EmergencyContact]
-        var physicianInfo: PhysicianInfo
-        var dentistInfo: DentistInfo
-        var userDefinedItems: [UserDefinedItem]
+        public var lockerInfoRecords: String? // TODO: Find data type
+        public var formattedName: String
+        public var permID: String
+        public var gender: String
+        public var grade: String
+        public var address: String
+        public var lastNameGoesBy: String?
+        public var nickname: String?
+        public var birthDate: Date
+        public var email: String
+        public var phone: String
+        public var homeLanguage: String
+        public var currentSchool: String
+        public var track: String? // TODO: Find data type
+        public var homeRoomTeacher: String
+        public var homeRoomTeacherEmail: String
+        public var homeRoomTeacherGU: String
+        public var orgYearGU: String
+        public var homeRoom: String
+        public var counselorName: String
+        public var photo: String?
+        public var emergencyContacts: [EmergencyContact]
+        public var physicianInfo: PhysicianInfo
+        public var dentistInfo: DentistInfo
+        public var userDefinedItems: [UserDefinedItem]
 
         public static func deserialize(_ element: XMLIndexer) throws -> StudentInfo {
             let studentInfo = element["StudentInfo"]

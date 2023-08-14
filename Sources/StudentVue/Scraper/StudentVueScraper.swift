@@ -14,8 +14,8 @@ public class StudentVueScraper {
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15"
     public let base: String
 
-    public let username: String
-    public let password: String
+    internal let username: String
+    internal let password: String
 
     public struct URLSessionResponse {
         var data: Data?

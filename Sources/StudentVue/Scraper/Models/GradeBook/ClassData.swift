@@ -9,46 +9,46 @@ import Foundation
 import SwiftSoup
 
 extension StudentVueScraper {
-    struct PointStruct {
-        var score: Double
-        var outOf: Double
+    public struct PointStruct {
+        public var score: Double
+        public var outOf: Double
     }
 
-    struct ClassGrades {
-        var mark: String
-        var count: Int
+    public struct ClassGrades {
+        public var mark: String
+        public var count: Int
     }
 
-    struct GradeHistory {
-        var date: Date
-        var score: Int
+    public struct GradeHistory {
+        public var date: Date
+        public var score: Int
     }
 
-    struct Weight {
-        var name: String
-        var weight: Int
-        var percent: Double
-        var percentOfTotal: Double
+    public struct Weight {
+        public var name: String
+        public var weight: Int
+        public var percent: Double
+        public var percentOfTotal: Double
     }
 
     public struct ClassData {
-        var guid: String
-        var teacher: String
-        var period: Int
-        var name: String
-        var room: String
-        var lastUpdated: Date
-        var currentMark: String
-        var currentScore: Double
-        var missingAssignments: Int
-        var totalAssignments: Int
-        var upcomingAssignments: Int
-        var highestScore: Int
-        var lowestScore: Int
-        var weights: [Weight]
-        var history: [GradeHistory]
-        var assignments: [GradeData]
-        var classGrades: [ClassGrades]
+        public var guid: String
+        public var teacher: String
+        public var period: Int
+        public var name: String
+        public var room: String
+        public var lastUpdated: Date
+        public var currentMark: String
+        public var currentScore: Double
+        public var missingAssignments: Int
+        public var totalAssignments: Int
+        public var upcomingAssignments: Int
+        public var highestScore: Int
+        public var lowestScore: Int
+        public var weights: [Weight]
+        public var history: [GradeHistory]
+        public var assignments: [GradeData]
+        public var classGrades: [ClassGrades]
     }
 }
 

@@ -26,12 +26,12 @@ extension StudentVueApi {
     }
 
     public struct HealthImmunizationListing: XMLObjectDeserialization {
-        var accessGU: String
-        var compliant: Bool
-        var compliantMessage: String
-        var name: String
-        var numReqDoses: Int
-        var immunizationDates: [Date]
+        public var accessGU: String
+        public var compliant: Bool
+        public var compliantMessage: String
+        public var name: String
+        public var numReqDoses: Int
+        public var immunizationDates: [Date]
 
         public static func deserialize(_ element: XMLIndexer) throws -> HealthImmunizationListing {
             HealthImmunizationListing(accessGU: try element.value(ofAttribute: "AccessGU"),
@@ -44,9 +44,9 @@ extension StudentVueApi {
     }
 
     public struct StudentHealthInfo: XMLObjectDeserialization {
-        var healtVisitListings: [HealthVisitListing]
-        var healthConditionListings: [HealthConditionListing]
-        var healthImmunizationListing: [HealthImmunizationListing]
+        public var healtVisitListings: [HealthVisitListing]
+        public var healthConditionListings: [HealthConditionListing]
+        public var healthImmunizationListing: [HealthImmunizationListing]
 
         public static func deserialize(_ element: XMLIndexer) throws -> StudentHealthInfo {
             let healthInfo = element["StudentHealthData"]

@@ -9,10 +9,10 @@ import Foundation
 import SwiftSoup
 
 extension StudentVueScraper {
-    struct GradeBook {
-        var classes: [ClassData] = []
+    public struct GradeBook {
+        public var classes: [ClassData] = []
 
-        init(html: String, client: StudentVue) async throws {
+        public init(html: String, client: StudentVue) async throws {
             let doc = try SwiftSoup.parse(html)
 
             let roomRows = try doc.getElementsByClass("row gb-class-header gb-class-row flexbox horizontal")

@@ -10,10 +10,10 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct GradingPeriod: XMLObjectDeserialization {
-        var index: Int?
-        var gradePeriodName: String
-        var startDate: Date
-        var endDate: Date
+        public var index: Int?
+        public var gradePeriodName: String
+        public var startDate: Date
+        public var endDate: Date
 
         public static func deserialize(_ element: XMLIndexer) throws -> GradingPeriod {
             GradingPeriod(index: element.value(ofAttribute: "Index"),
@@ -24,19 +24,19 @@ extension StudentVueApi {
     }
 
     public struct GradeBookResource: XMLObjectDeserialization {
-        var classID: String
-        var fileType: String?
-        var gradebookID: String
-        var resourceDate: Date
-        var resourceDescription: String
-        var resourceID: String
-        var resourceName: String
-        var sequence: String
-        var teacherID: String
-        var type: String // TODO: Find other data types
+        public var classID: String
+        public var fileType: String?
+        public var gradebookID: String
+        public var resourceDate: Date
+        public var resourceDescription: String
+        public var resourceID: String
+        public var resourceName: String
+        public var sequence: String
+        public var teacherID: String
+        public var type: String // TODO: Find other data types
 
-        var url: URL?
-        var serverFileName: String
+        public var url: URL?
+        public var serverFileName: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> GradeBookResource {
             GradeBookResource(classID: try element.value(ofAttribute: "ClassID"),
@@ -55,22 +55,22 @@ extension StudentVueApi {
     }
 
     public struct GradeBookAssignment: XMLObjectDeserialization {
-        var gradeBookID: String
-        var measure: String
-        var type: String
-        var date: Date
-        var dueDate: Date
-        var score: String
-        var scoreType: String
-        var points: String
-        var notes: String
-        var teacherID: String
-        var studentID: String
-        var measureDescription: String
-        var hasDropBox: Bool
-        var dropStartDate: Date
-        var dropEndDate: Date
-        var resources: [GradeBookResource]
+        public var gradeBookID: String
+        public var measure: String
+        public var type: String
+        public var date: Date
+        public var dueDate: Date
+        public var score: String
+        public var scoreType: String
+        public var points: String
+        public var notes: String
+        public var teacherID: String
+        public var studentID: String
+        public var measureDescription: String
+        public var hasDropBox: Bool
+        public var dropStartDate: Date
+        public var dropEndDate: Date
+        public var resources: [GradeBookResource]
 
         public static func deserialize(_ element: XMLIndexer) throws -> GradeBookAssignment {
             GradeBookAssignment(gradeBookID: try element.value(ofAttribute: "GradebookID"),
@@ -93,10 +93,10 @@ extension StudentVueApi {
     }
 
     public struct Grade: XMLObjectDeserialization {
-        var gradePeriodName: String
-        var calculatedGrade: String
-        var calculatedGradeRaw: Float
-        var assignments: [GradeBookAssignment]
+        public var gradePeriodName: String
+        public var calculatedGrade: String
+        public var calculatedGradeRaw: Float
+        public var assignments: [GradeBookAssignment]
 
         public static func deserialize(_ element: XMLIndexer) throws -> Grade {
             Grade(gradePeriodName: try element.value(ofAttribute: "MarkName"),
@@ -107,15 +107,15 @@ extension StudentVueApi {
     }
 
     public struct Course: XMLObjectDeserialization {
-        var usesRichContent: Bool
-        var period: Int
-        var name: String
-        var room: String
-        var teacher: String
-        var teacherEmail: String
-        var teacherGU: String
-        var highlightPercentageCutOffForProgressBar: Int
-        var grades: [Grade]
+        public var usesRichContent: Bool
+        public var period: Int
+        public var name: String
+        public var room: String
+        public var teacher: String
+        public var teacherEmail: String
+        public var teacherGU: String
+        public var highlightPercentageCutOffForProgressBar: Int
+        public var grades: [Grade]
 
         public static func deserialize(_ element: XMLIndexer) throws -> Course {
             Course(usesRichContent: try element.value(ofAttribute: "UsesRichContent"),
@@ -131,9 +131,9 @@ extension StudentVueApi {
     }
 
     public struct GradeBook: XMLObjectDeserialization {
-        var gradingPeriods: [GradingPeriod]
-        var cuarrentGradingPeriod: GradingPeriod
-        var courses: [Course]
+        public var gradingPeriods: [GradingPeriod]
+        public var cuarrentGradingPeriod: GradingPeriod
+        public var courses: [Course]
 
         public static func deserialize(_ element: XMLIndexer) throws -> GradeBook {
             let gradebook = element["Gradebook"]

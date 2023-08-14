@@ -10,11 +10,11 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct RCReportingPeriod: XMLObjectDeserialization {
-        var reportingPeriodGU: String
-        var reportingPeriodName: String
-        var endDate: Date
-        var message: String
-        var documentGU: String
+        public var reportingPeriodGU: String
+        public var reportingPeriodName: String
+        public var endDate: Date
+        public var message: String
+        public var documentGU: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> RCReportingPeriod {
             RCReportingPeriod(reportingPeriodGU: try element.value(ofAttribute: "ReportingPeriodGU"),
@@ -26,7 +26,7 @@ extension StudentVueApi {
     }
 
     public struct ReportCards: XMLObjectDeserialization {
-        var rcReportingPeriods: [RCReportingPeriod]
+        public var rcReportingPeriods: [RCReportingPeriod]
 
         public static func deserialize(_ element: XMLIndexer) throws -> ReportCards {
             ReportCards(rcReportingPeriods: try element["RCReportingPeriodData"]["RCReportingPeriods"]["RCReportingPeriod"].value())
@@ -34,11 +34,11 @@ extension StudentVueApi {
     }
 
     public struct ReportCard: XMLObjectDeserialization {
-        var documentGU: String
-        var fileName: String
-        var docFileName: String
-        var docType: String
-        var base64Code: String
+        public var documentGU: String
+        public var fileName: String
+        public var docFileName: String
+        public var docType: String
+        public var base64Code: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> ReportCard {
             let reportCard = element["DocumentData"]

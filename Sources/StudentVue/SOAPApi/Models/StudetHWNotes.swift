@@ -10,10 +10,10 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct StudentHWNotes: XMLObjectDeserialization {
-        var studentGU: String
-        var sisNumber: String
-        var studentSSY: String
-        var gBHomeWorkNotesRecords: [String]? // TODO: Find data type/structure
+        public var studentGU: String
+        public var sisNumber: String
+        public var studentSSY: String
+        public var gBHomeWorkNotesRecords: [String]? // TODO: Find data type/structure
 
         public static func deserialize(_ element: XMLIndexer) throws -> StudentHWNotes {
             let notes = element["GBHWNotesDatas"]

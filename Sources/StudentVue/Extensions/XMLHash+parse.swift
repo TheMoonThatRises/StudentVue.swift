@@ -20,8 +20,8 @@ public extension XMLHash {
         let request = parse(soapString)["soap:Envelope"]["soap:Body"]["ProcessWebServiceRequestResponse"]["ProcessWebServiceRequestResult"]
 
         do {
-            throw StudentVueErrors.soapError(try request["RT_ERROR"].value(ofAttribute: "ERROR_MESSAGE"))
-        } catch let error as StudentVueErrors {
+            throw StudentVueApi.StudentVueErrors.soapError(try request["RT_ERROR"].value(ofAttribute: "ERROR_MESSAGE"))
+        } catch let error as StudentVueApi.StudentVueErrors {
             throw error
         } catch {
             return request

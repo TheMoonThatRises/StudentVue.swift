@@ -10,10 +10,10 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct DistrictInfo: XMLObjectDeserialization {
-        var districtID: String
-        var districtName: String
-        var districtAddress: String
-        var districtURL: URL
+        public var districtID: String
+        public var districtName: String
+        public var districtAddress: String
+        public var districtURL: URL
 
         public static func deserialize(_ element: XMLIndexer) throws -> DistrictInfo {
             try DistrictInfo(districtID: element.value(ofAttribute: "DistrictID"),
@@ -24,7 +24,7 @@ extension StudentVueApi {
     }
 
     public struct Districts: XMLObjectDeserialization {
-        var districts: [DistrictInfo]
+        public var districts: [DistrictInfo]
 
         public static func deserialize(_ element: XMLIndexer) throws -> Districts {
             try Districts(districts: element["DistrictLists"]["DistrictInfos"].children.map { try $0.value() })

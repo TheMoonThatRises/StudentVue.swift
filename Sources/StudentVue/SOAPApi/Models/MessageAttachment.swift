@@ -10,8 +10,8 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct MessageAttachment: XMLObjectDeserialization {
-        var documentName: String
-        var base64Code: String
+        public var documentName: String
+        public var base64Code: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> MessageAttachment {
             let document = element["AttachmentXML"]

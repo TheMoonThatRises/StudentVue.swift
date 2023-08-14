@@ -23,19 +23,19 @@ extension StudentVueScraper {
             case gradeBookId, studentId, googleAssignmentLink
         }
 
-        var gradeBookId: String
-        var studentId: String
-        var teacher: String
-        var date: String
-        var googleAssignmentLink: String
-        var gbAssignmentType: String
-        var gbResources: String
-        var gbSubject: String
-        var gbScore: String
-        var gbScoreType: String
-        var gbPoints: String
-        var gbNotes: String
-        var gbDropBox: String
+        public var gradeBookId: String
+        public var studentId: String
+        public var teacher: String
+        public var date: String
+        public var googleAssignmentLink: String
+        public var gbAssignmentType: String
+        public var gbResources: String
+        public var gbSubject: String
+        public var gbScore: String
+        public var gbScoreType: String
+        public var gbPoints: String
+        public var gbNotes: String
+        public var gbDropBox: String
 
         public var id: String {
             gradeBookId

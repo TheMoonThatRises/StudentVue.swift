@@ -10,18 +10,18 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct MessageListing: XMLObjectDeserialization {
-        var iconURL: String?
-        var id: String?
-        var beginDate: Date
-        var type: String
-        var subject: String
-        var content: String?
-        var read: Bool
-        var deletable: Bool
-        var from: String?
-        var subjectNoHTML: String
-        var module: String?
-        var attachmentData: [String]? // TODO: Find data type/structure
+        public var iconURL: String?
+        public var id: String?
+        public var beginDate: Date
+        public var type: String
+        public var subject: String
+        public var content: String?
+        public var read: Bool
+        public var deletable: Bool
+        public var from: String?
+        public var subjectNoHTML: String
+        public var module: String?
+        public var attachmentData: [String]? // TODO: Find data type/structure
 
         public static func deserialize(_ element: XMLIndexer) throws -> MessageListing {
             MessageListing(iconURL: element.value(ofAttribute: "IconURL"),
@@ -39,8 +39,8 @@ extension StudentVueApi {
     }
 
     public struct SynergyMessageListingByStudent: XMLObjectDeserialization {
-        var studentGU: String
-        var messageListings: [MessageListing]
+        public var studentGU: String
+        public var messageListings: [MessageListing]
 
         public static func deserialize(_ element: XMLIndexer) throws -> SynergyMessageListingByStudent {
             SynergyMessageListingByStudent(studentGU: try element.value(ofAttribute: "StudentGU"),
@@ -49,8 +49,8 @@ extension StudentVueApi {
     }
 
     public struct PXPMessages: XMLObjectDeserialization {
-        var messageListings: [MessageListing]
-        var synergyMessageListingsByStudents: [SynergyMessageListingByStudent]
+        public var messageListings: [MessageListing]
+        public var synergyMessageListingsByStudents: [SynergyMessageListingByStudent]
 
         public static func deserialize(_ element: XMLIndexer) throws -> PXPMessages {
             let messages = element["PXPMessagesData"]

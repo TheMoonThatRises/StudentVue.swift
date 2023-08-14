@@ -10,12 +10,12 @@ import SwiftSoup
 
 extension StudentVueScraper {
     public struct StudentInfo {
-        var id: String
-        var name: String
-        var grade: Int
-        var school: String
-        var phone: String
-        var photo: URL?
+        public var id: String
+        public var name: String
+        public var grade: Int
+        public var school: String
+        public var phone: String
+        public var photo: URL?
 
         public init?(html: String) throws {
             let doc = try SwiftSoup.parse(html)
