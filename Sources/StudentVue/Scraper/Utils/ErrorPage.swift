@@ -14,14 +14,14 @@ extension StudentVueScraper {
             let doc = try SwiftSoup.parse(html)
 
             if let error = try doc.getElementById("USER_ERROR")?.text(), !error.isEmpty {
-                throw StudentVueErrors.unknown(message: error)
+                throw ScraperErrors.unknown(message: error)
             } else if let error = try doc.getElementById("ctl00_MainContent_ERROR")?.text().lowercased(), !error.isEmpty {
                 if error.contains("incorrect") {
-                    throw StudentVueErrors.incorrectPassword
+                    throw ScraperErrors.incorrectPassword
                 } else if error.contains("invalid") {
-                    throw StudentVueErrors.invalidUsername
+                    throw ScraperErrors.invalidUsername
                 } else {
-                    throw StudentVueErrors.unknown(message: error)
+                    throw ScraperErrors.unknown(message: error)
                 }
             }
         }

@@ -188,11 +188,11 @@ public class StudentVueScraper {
                                      urlParams: urlParams)
 
         guard let httpResponse = response.response, httpResponse.statusCode == 200 else {
-            throw StudentVueErrors.responseNot200
+            throw ScraperErrors.responseNot200
         }
 
         guard let data = response.data, let html = String(data: data, encoding: .utf8) else {
-            throw StudentVueErrors.emptyData
+            throw ScraperErrors.emptyData
         }
 
         try ErrorPage.parse(html: html)
@@ -216,11 +216,11 @@ public class StudentVueScraper {
     /// - Returns: The gradebook HTML if successful
     public func login() async throws -> HTMLURLSessionResponse {
         guard !username.isEmpty else {
-            throw StudentVueErrors.noUsername
+            throw ScraperErrors.noUsername
         }
 
         guard !password.isEmpty else {
-            throw StudentVueErrors.noPassword
+            throw ScraperErrors.noPassword
         }
 
         let vueState = try await generateSessionId()

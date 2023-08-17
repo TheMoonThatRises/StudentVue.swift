@@ -7,7 +7,7 @@
 
 import Foundation
 extension StudentVueScraper {
-    enum StudentVueErrors: Error {
+    public enum ScraperErrors: Error {
         case emptyData
         case incorrectPassword
         case invalidUsername
@@ -19,7 +19,7 @@ extension StudentVueScraper {
     }
 }
 
-extension StudentVueScraper.StudentVueErrors: LocalizedError {
+extension StudentVueScraper.ScraperErrors: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .emptyData:
