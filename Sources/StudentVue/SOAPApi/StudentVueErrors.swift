@@ -8,16 +8,18 @@
 import Foundation
 
 extension StudentVueApi {
-    enum StudentVueErrors: LocalizedError {
+    public enum StudentVueErrors: LocalizedError {
         case unreachableURL(String)
         case emptyResponse
         case clientNotIntialised
+        case noUsername
+        case noPassword
         case soapError(String)
     }
 }
 
 extension StudentVueApi.StudentVueErrors {
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .unreachableURL(let string):
             return "Unable to reach domain: \(string)"
@@ -25,6 +27,10 @@ extension StudentVueApi.StudentVueErrors {
             return "Empty response body"
         case .clientNotIntialised:
             return "StudentVue client has not been created"
+        case .noUsername:
+            return "No username provided"
+        case .noPassword:
+            return "No password provided"
         case .soapError(let string):
             return "Soap request returned error: \(string)"
         }

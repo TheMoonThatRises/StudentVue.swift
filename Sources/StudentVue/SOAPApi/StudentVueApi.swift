@@ -97,6 +97,14 @@ public class StudentVueApi {
                                    methodName: Methods,
                                    serviceHandle: WebServices = .pxpWebServices,
                                    params: [String: [String: String]] = [:]) async throws -> String {
+        guard !username.isEmpty else {
+            throw StudentVueErrors.noUsername
+        }
+
+        guard !password.isEmpty else {
+            throw StudentVueErrors.noPassword
+        }
+
         var request = URLRequest(url: URL(string: url + "\(endpoint.rawValue).asmx")!)
         request.httpMethod = "POST"
         request.httpBody = SoapXML(userID: username,
