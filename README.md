@@ -8,7 +8,7 @@ Swift library for interacting with StudentVue's api. This project was heavily in
 ## Installation
 
 ```swift
-.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.1.5")
+.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.1.6")
 ```
 
 ## Basic usage
@@ -49,6 +49,20 @@ You can use the built-in scraper parser to parse specific endpoints. These struc
 
 ```swift
 try await StudentVueScraper.GradeBook(html: try await client.scraper.login(), client: client) // Returns gradebook in an array of `ClassData`
+```
+
+If you require a struct to be Hashable (for iterating in UI), you can create an extension like this:
+
+```swift
+extension StudentVueApi.DistrictInfo: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(districtID)
+    }
+
+    public static func == (lhs: StudentVueApi.DistrictInfo, rhs: StudentVueApi.DistrictInfo) -> Bool {
+        lhs.districtID == rhs.districtID
+    }
+}
 ```
 
 ## Todo List
