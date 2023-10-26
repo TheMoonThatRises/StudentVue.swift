@@ -28,4 +28,13 @@ public class StudentVue {
         self.api = StudentVueApi(domain: domain, username: username, password: password)
         self.scraper = StudentVueScraper(domain: domain, username: username, password: password)
     }
+
+    public func updateCredentials(domain: String? = nil, username: String? = nil, password: String? = nil) {
+        if let domain = domain {
+            StudentVue.domain = domain
+        }
+
+        self.api.updateCredentials(domain: domain, username: username, password: password)
+        self.scraper.updateCredentials(domain: domain, username: username, password: password)
+    }
 }

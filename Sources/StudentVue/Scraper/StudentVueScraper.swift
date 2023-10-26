@@ -8,14 +8,16 @@
 import Foundation
 
 public class StudentVueScraper {
-    internal let domain: String
+    private var domain: String
 
-    internal let userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) " +
+    private static let userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) " +
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15"
-    public let base: String
+    private var base: String {
+        "https://\(domain)"
+    }
 
-    internal let username: String
-    internal let password: String
+    private var username: String
+    private var password: String
 
     public struct URLSessionResponse {
         var data: Data?
@@ -60,7 +62,7 @@ public class StudentVueScraper {
         case scrape, api
     }
 
-    internal let scraperSession: URLSession
+    private let scraperSession: URLSession
 
     /// Initializes a new StudentVueScraper client with user credientials
     ///
@@ -73,7 +75,6 @@ public class StudentVueScraper {
     init(domain: String, username: String, password: String) {
         URLSession.shared.configuration.timeoutIntervalForRequest = 120.0
         self.domain = domain
-        self.base = "https://\(self.domain)"
         self.username = username
         self.password = password
 
@@ -82,14 +83,34 @@ public class StudentVueScraper {
         sessionConfig.httpAdditionalHeaders = [
             "Accept-Language": "en-US,en;q=0.9",
             "Sec-Fetch-Site": "same-origin",
-            "User-Agent": userAgent,
+            "User-Agent": StudentVueScraper.userAgent,
             "Host": domain
         ]
-        sessionConfig.allowsCellularAccess = false
+        sessionConfig.allowsCellularAccess = true
         sessionConfig.httpShouldSetCookies = true
         sessionConfig.httpCookieAcceptPolicy = .always
 
         self.scraperSession = URLSession(configuration: sessionConfig)
+    }
+
+    /// Updates the credentials of the user
+    ///
+    /// - Parameters:
+    ///   - domain: The new domain
+    ///   - username: The new username
+    ///   - password: The new password
+    internal func updateCredentials(domain: String? = nil, username: String? = nil, password: String? = nil) {
+        if let domain = domain {
+            self.domain = domain
+        }
+
+        if let username = username {
+            self.username = username
+        }
+
+        if let password = password {
+            self.password = password
+        }
     }
 
     /// Build the header of the request with the corresponding type

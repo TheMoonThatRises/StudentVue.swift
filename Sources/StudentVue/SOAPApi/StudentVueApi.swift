@@ -41,13 +41,16 @@ public class StudentVueApi {
         case hdInfoServices = "HDInfoServices"
     }
 
+    private var domain: String
     /// The base URL to access StudentVue's APIs
-    internal let url: String
+    private var url: String {
+        "https://\(domain)/Service/"
+    }
 
     /// The username to log into StudentVue's API
-    internal var username: String
+    private var username: String
     /// The password to log into StudentVue's API/
-    internal var password: String
+    private var password: String
 
     /// Creates a new URLSession for the library to use
     private let session: URLSession
@@ -61,7 +64,7 @@ public class StudentVueApi {
     ///
     /// - Returns: A new StudentVueApi client
     public init(domain: String, username: String, password: String) {
-        self.url = "https://\(domain)/Service/"
+        self.domain = domain
 
         self.username = username
         self.password = password
@@ -80,6 +83,26 @@ public class StudentVueApi {
         sessionConfig.httpCookieAcceptPolicy = .never
 
         self.session = URLSession(configuration: sessionConfig)
+    }
+
+    /// Updates the credentials of the user
+    ///
+    /// - Parameters:
+    ///   - domain: The new domain
+    ///   - username: The new username
+    ///   - password: The new password
+    internal func updateCredentials(domain: String? = nil, username: String? = nil, password: String? = nil) {
+        if let domain = domain {
+            self.domain = domain
+        }
+
+        if let username = username {
+            self.username = username
+        }
+
+        if let password = password {
+            self.password = password
+        }
     }
 
     /// Lowest level function to access StudentVue's API
