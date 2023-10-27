@@ -20,14 +20,14 @@ public class StudentVueScraper {
     private var password: String
 
     public struct URLSessionResponse {
-        var data: Data?
-        var response: HTTPURLResponse?
+        public var data: Data?
+        public var response: HTTPURLResponse?
     }
 
     public struct HTMLURLSessionResponse {
-        var html: String
-        var response: HTTPURLResponse
-        var urlSessionResponse: URLSessionResponse
+        public var html: String
+        public var response: HTTPURLResponse
+        public var urlSessionResponse: URLSessionResponse
     }
 
     // All of StudentVue's endpoint
