@@ -12,11 +12,12 @@ let package = Package(
     products: [
         .library(
             name: "StudentVue",
-            targets: ["StudentVue"])
+            targets: ["StudentVue"]
+        )
     ],
     dependencies: [
-        .package(url: "https://github.com/drmohundro/SWXMLHash", from: "7.0.1"),
-        .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.6.0")
+        .package(url: "https://github.com/drmohundro/SWXMLHash", from: "7.0.2"),
+        .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.7.4")
     ],
     targets: [
         .target(
