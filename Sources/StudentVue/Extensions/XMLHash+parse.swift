@@ -24,15 +24,11 @@ public extension XMLHash {
         do {
             for child in request.children {
                 for attr in XMLHash.errorAttributes {
-                    do {
-                        guard let attrValue = child.element?.attribute(by: attr)?.text else {
-                            continue
-                        }
-
-                        throw StudentVueApi.StudentVueErrors.soapError(attrValue)
-                    } catch let error as StudentVueApi.StudentVueErrors {
-                        throw error
+                    guard let attrValue = child.element?.attribute(by: attr)?.text else {
+                        continue
                     }
+
+                    throw StudentVueApi.StudentVueErrors.soapError(attrValue)
                 }
             }
         } catch let error as StudentVueApi.StudentVueErrors {
