@@ -60,7 +60,6 @@ extension StudentVueApi {
         public var type: String
         public var date: Date
         public var dueDate: Date
-        public var score: String
         public var scoreType: String
         public var points: String
         public var notes: String
@@ -78,7 +77,6 @@ extension StudentVueApi {
                                 type: try element.value(ofAttribute: "Type"),
                                 date: try element.value(ofAttribute: "Date"),
                                 dueDate: try element.value(ofAttribute: "DueDate"),
-                                score: try element.value(ofAttribute: "Score"),
                                 scoreType: try element.value(ofAttribute: "ScoreType"),
                                 points: try element.value(ofAttribute: "Points"),
                                 notes: try element.value(ofAttribute: "Notes"),
