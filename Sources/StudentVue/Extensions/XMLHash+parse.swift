@@ -9,6 +9,8 @@ import Foundation
 import SWXMLHash
 
 public extension XMLHash {
+    static fileprivate let errorAttributes = ["ERROR_MESSAGE", "errorMessage"]
+
     /// Wrapper of XMLHash parse function
     ///
     /// - Parameter soapString: The SOAP XML to parse
@@ -20,11 +22,23 @@ public extension XMLHash {
         let request = parse(soapString)["soap:Envelope"]["soap:Body"]["ProcessWebServiceRequestResponse"]["ProcessWebServiceRequestResult"]
 
         do {
-            throw StudentVueApi.StudentVueErrors.soapError(try request["RT_ERROR"].value(ofAttribute: "ERROR_MESSAGE"))
+            for child in request.children {
+                for attr in XMLHash.errorAttributes {
+                    do {
+                        guard let attrValue = child.element?.attribute(by: attr)?.text else {
+                            continue
+                        }
+
+                        throw StudentVueApi.StudentVueErrors.soapError(attrValue)
+                    } catch let error as StudentVueApi.StudentVueErrors {
+                        throw error
+                    }
+                }
+            }
         } catch let error as StudentVueApi.StudentVueErrors {
             throw error
-        } catch {
-            return request
         }
+
+        return request
     }
 }
