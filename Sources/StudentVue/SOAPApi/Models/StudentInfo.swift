@@ -135,3 +135,23 @@ extension StudentVueApi.StudentInfo {
         self = try XMLHash.parse(soapString: string).value()
     }
 }
+
+extension StudentVueApi.EmergencyContact: Identifiable, Equatable {
+    public var id: String {
+        name + mobilePhone + homePhone
+    }
+
+    public static func == (lhs: StudentVueApi.EmergencyContact, rhs: StudentVueApi.EmergencyContact) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension StudentVueApi.UserDefinedItem: Identifiable, Equatable {
+    public var id: String {
+        vcid
+    }
+
+    public static func == (lhs: StudentVueApi.UserDefinedItem, rhs: StudentVueApi.UserDefinedItem) -> Bool {
+        lhs.id == rhs.id
+    }
+}
