@@ -146,6 +146,26 @@ extension StudentVueApi.EmergencyContact: Identifiable, Equatable {
     }
 }
 
+extension StudentVueApi.PhysicianInfo: Identifiable, Equatable {
+    public var id: String {
+        name + phone
+    }
+
+    public static func == (lhs: StudentVueApi.PhysicianInfo, rhs: StudentVueApi.PhysicianInfo) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension StudentVueApi.DentistInfo: Identifiable, Equatable {
+    public var id: String {
+        name + phone
+    }
+
+    public static func == (lhs: StudentVueApi.DentistInfo, rhs: StudentVueApi.DentistInfo) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 extension StudentVueApi.UserDefinedItem: Identifiable, Equatable {
     public var id: String {
         vcid
