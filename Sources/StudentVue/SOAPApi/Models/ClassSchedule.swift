@@ -68,6 +68,10 @@ extension StudentVueApi {
         }
     }
 
+    public struct AdditionalStaffInformationXML: XMLObjectDeserialization {
+
+    }
+
     public struct ClassListSchedule: XMLObjectDeserialization {
         public var period: Int
         public var courseTitle: String
@@ -76,7 +80,7 @@ extension StudentVueApi {
         public var teacherEmail: String
         public var sectionGU: String
         public var teacherGU: String
-        public var additionalStaffInformation: [String]? // TODO: Find data type/structure
+        public var additionalStaffInformationXMLs: [AdditionalStaffInformationXML]?
 
         public static func deserialize(_ element: XMLIndexer) throws -> ClassListSchedule {
             ClassListSchedule(period: try element.value(ofAttribute: "Period"),
@@ -117,6 +121,47 @@ extension StudentVueApi {
         }
     }
 
+    public struct ClassListing: XMLObjectDeserialization {
+        public var teacherEmail: String
+        public var excludePVUE: Bool
+        public var teacher: String
+        public var period: Int
+        public var courseTitle: String
+        public var teacherStaffGU: String
+        public var sectionGU: String
+        public var roomName: String
+        public var additionalStaffInformationXMLs: [AdditionalStaffInformationXML]?
+
+        public static func deserialize(_ element: XMLIndexer) throws -> ClassListing {
+            ClassListing(teacherEmail: try element.value(ofAttribute: "TeacherEmail"),
+                         excludePVUE: try element.value(ofAttribute: "ExcludePVUE"),
+                         teacher: try element.value(ofAttribute: "Teacher"),
+                         period: try element.value(ofAttribute: "Period"),
+                         courseTitle: try element.value(ofAttribute: "CourseTitle"),
+                         teacherStaffGU: try element.value(ofAttribute: "TeacherStaffGU"),
+                         sectionGU: try element.value(ofAttribute: "SectionGU"),
+                         roomName: try element.value(ofAttribute: "RoomName"))
+        }
+    }
+
+    public struct ConcurrentSchoolStudentClassSchedule: XMLObjectDeserialization {
+        public var conSchTermIndexName: String
+        public var conSchOrgYearGU: String
+        public var conSchTermIndex: Int
+        public var schoolName: String
+        public var conSchErrorMessage: String
+        public var conSchClassLists: [ClassListing]
+
+        public static func deserialize(_ element: XMLIndexer) throws -> ConcurrentSchoolStudentClassSchedule {
+            ConcurrentSchoolStudentClassSchedule(conSchTermIndexName: try element.value(ofAttribute: "ConSchTermIndexName"),
+                                                 conSchOrgYearGU: try element.value(ofAttribute: "ConSchOrgYearGU"),
+                                                 conSchTermIndex: try element.value(ofAttribute: "ConSchTermIndex"),
+                                                 schoolName: try element.value(ofAttribute: "SchoolName"),
+                                                 conSchErrorMessage: try element.value(ofAttribute: "ConSchErrorMessage"),
+                                                 conSchClassLists: try element["ConSchClassLists"].value())
+        }
+    }
+
     public struct ClassSchedule: XMLObjectDeserialization {
         public var termIndex: Int
         public var termIndexName: String
@@ -125,7 +170,7 @@ extension StudentVueApi {
         public var todayScheduleInfo: TodayScheduleInfo?
         public var classLists: [ClassListSchedule]
         public var termLists: [TermListSchedule]
-        public var concurrentSchoolStudentClassSchedules: [String]? // TODO: Find data type/structure
+        public var concurrentSchoolStudentClassSchedules: [ConcurrentSchoolStudentClassSchedule]
 
         public static func deserialize(_ element: XMLIndexer) throws -> ClassSchedule {
             let schedule = element["StudentClassSchedule"]
@@ -136,7 +181,9 @@ extension StudentVueApi {
                                  includeAdditionaWhenEmailingTeachers: try schedule.value(ofAttribute: "IncludeAdditionalStaffWhenEmailingTeachers"),
                                  todayScheduleInfo: try? schedule["TodayScheduleInfoData"].value(),
                                  classLists: try schedule["ClassLists"]["ClassListing"].value(),
-                                 termLists: try schedule["TermLists"]["TermListing"].value())
+                                 termLists: try schedule["TermLists"]["TermListing"].value(),
+                                 concurrentSchoolStudentClassSchedules:
+                                    try schedule["ConcurrentSchoolStudentClassSchedules"]["ConcurrentSchoolStudentClassSchedule"].value())
         }
     }
 }

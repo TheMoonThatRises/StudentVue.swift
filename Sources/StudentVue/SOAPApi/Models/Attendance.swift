@@ -65,8 +65,18 @@ extension StudentVueApi {
         }
     }
 
+    public struct ConcurrentSchoolsList: XMLObjectDeserialization {
+        public var concurrentSchoolName: String
+        public var concurrentOrgYearGU: String
+
+        public static func deserialize(_ element: XMLIndexer) throws -> ConcurrentSchoolsList {
+            ConcurrentSchoolsList(concurrentSchoolName: try element.value(ofAttribute: "ConcurrentSchoolName"),
+                                  concurrentOrgYearGU: try element.value(ofAttribute: "ConcurrentOrgYearGU"))
+        }
+    }
+
     public struct Attendance: XMLObjectDeserialization {
-        public var type: String // TODO: Find other types
+        public var type: String
         public var startPeriod: Int
         public var endPeriod: Int
         public var periodCount: Int
@@ -77,7 +87,7 @@ extension StudentVueApi {
         public var totalUnexcused: [AttendancePeriodTotal]
         public var totalActivities: [AttendancePeriodTotal]
         public var totalUnexcusedTardies: [AttendancePeriodTotal]
-        public var concurrentSchoolsLists: String? // TODO: Find data type/structure
+        public var concurrentSchoolsLists: [ConcurrentSchoolsList]
 
         public static func deserialize(_ element: XMLIndexer) throws -> Attendance {
             let attendance = element["Attendance"]
@@ -92,7 +102,8 @@ extension StudentVueApi {
                               totalTardies: try attendance["TotalTardies"]["PeriodTotal"].value(),
                               totalUnexcused: try attendance["TotalUnexcused"]["PeriodTotal"].value(),
                               totalActivities: try attendance["TotalActivities"]["PeriodTotal"].value(),
-                              totalUnexcusedTardies: try attendance["TotalUnexcusedTardies"]["PeriodTotal"].value())
+                              totalUnexcusedTardies: try attendance["TotalUnexcusedTardies"]["PeriodTotal"].value(),
+                              concurrentSchoolsLists: try attendance["ConcurrentSchoolsLists"]["ConcurrentSchoolsList"].value())
         }
     }
 }
