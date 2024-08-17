@@ -59,3 +59,13 @@ extension StudentVueApi.StudentCalendar {
         self = try XMLHash.parse(soapString: string).value()
     }
 }
+
+extension StudentVueApi.CalendarEventList: Identifiable, Equatable {
+    public var id: String {
+        date.description + title
+    }
+
+    public static func == (lhs: StudentVueApi.CalendarEventList, rhs: StudentVueApi.CalendarEventList) -> Bool {
+        lhs.id == rhs.id
+    }
+}

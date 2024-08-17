@@ -67,3 +67,23 @@ extension StudentVueApi.SchoolInfo {
         self = try XMLHash.parse(soapString: string).value()
     }
 }
+
+extension StudentVueApi.StaffInfo: Identifiable, Equatable {
+    public var id: String {
+        staffGU
+    }
+
+    public static func == (lhs: StudentVueApi.StaffInfo, rhs: StudentVueApi.StaffInfo) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension StudentVueApi.SchoolInfo: Identifiable, Equatable {
+    public var id: String {
+        school + principalGU
+    }
+
+    public static func == (lhs: StudentVueApi.SchoolInfo, rhs: StudentVueApi.SchoolInfo) -> Bool {
+        lhs.id == rhs.id
+    }
+}

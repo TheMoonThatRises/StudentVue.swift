@@ -82,3 +82,13 @@ extension StudentVueApi.StudentAttachedDocumentData {
         self = try XMLHash.parse(soapString: string).value()
     }
 }
+
+extension StudentVueApi.StudentDocumentData: Identifiable, Equatable {
+    public var id: String {
+        documentGU
+    }
+
+    public static func == (lhs: StudentVueApi.StudentDocumentData, rhs: StudentVueApi.StudentDocumentData) -> Bool {
+        lhs.id == rhs.id
+    }
+}

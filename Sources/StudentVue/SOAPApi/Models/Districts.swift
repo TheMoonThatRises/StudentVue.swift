@@ -37,3 +37,17 @@ extension StudentVueApi.Districts {
         self = try XMLHash.parse(soapString: string).value()
     }
 }
+
+extension StudentVueApi.DistrictInfo: Hashable, Identifiable {
+    public var id: String {
+        districtID
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(districtID)
+    }
+
+    public static func == (lhs: StudentVueApi.DistrictInfo, rhs: StudentVueApi.DistrictInfo) -> Bool {
+        lhs.id == rhs.id
+    }
+}

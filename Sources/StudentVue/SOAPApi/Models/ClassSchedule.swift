@@ -146,3 +146,33 @@ extension StudentVueApi.ClassSchedule {
         self = try XMLHash.parse(soapString: string).value()
     }
 }
+
+extension StudentVueApi.ClassScheduleInfo: Identifiable, Equatable {
+    public var id: String {
+        sectionGU
+    }
+
+    public static func == (lhs: StudentVueApi.ClassScheduleInfo, rhs: StudentVueApi.ClassScheduleInfo) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension StudentVueApi.SchoolScheduleInfo: Identifiable, Equatable {
+    public var id: String {
+        schoolName + bellScheduleName
+    }
+
+    public static func == (lhs: StudentVueApi.SchoolScheduleInfo, rhs: StudentVueApi.SchoolScheduleInfo) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension StudentVueApi.ClassListSchedule: Identifiable, Equatable {
+    public var id: String {
+        sectionGU
+    }
+
+    public static func == (lhs: StudentVueApi.ClassListSchedule, rhs: StudentVueApi.ClassListSchedule) -> Bool {
+        lhs.id == rhs.id
+    }
+}

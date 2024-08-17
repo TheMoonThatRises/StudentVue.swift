@@ -62,6 +62,7 @@ extension StudentVueApi {
         public var dueDate: Date
         public var scoreType: String
         public var points: String
+        public var totalSecondsSincePost: Double
         public var notes: String
         public var teacherID: String
         public var studentID: String
@@ -79,6 +80,7 @@ extension StudentVueApi {
                                 dueDate: try element.value(ofAttribute: "DueDate"),
                                 scoreType: try element.value(ofAttribute: "ScoreType"),
                                 points: try element.value(ofAttribute: "Points"),
+                                totalSecondsSincePost: try element.value(ofAttribute: "TotalSecondsSincePost"),
                                 notes: try element.value(ofAttribute: "Notes"),
                                 teacherID: try element.value(ofAttribute: "TeacherID"),
                                 studentID: try element.value(ofAttribute: "StudentID"),
@@ -146,5 +148,25 @@ extension StudentVueApi {
 extension StudentVueApi.GradeBook {
     init(string: String) throws {
         self = try XMLHash.parse(soapString: string).value()
+    }
+}
+
+extension StudentVueApi.GradeBookResource: Identifiable, Equatable {
+    public var id: String {
+        resourceID
+    }
+
+    public static func == (lhs: StudentVueApi.GradeBookResource, rhs: StudentVueApi.GradeBookResource) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
+extension StudentVueApi.GradeBookAssignment: Identifiable, Equatable {
+    public var id: String {
+        gradeBookID
+    }
+
+    public static func == (lhs: StudentVueApi.GradeBookAssignment, rhs: StudentVueApi.GradeBookAssignment) -> Bool {
+        lhs.id == rhs.id
     }
 }
