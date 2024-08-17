@@ -63,3 +63,13 @@ extension StudentVueApi.StudentHealthInfo {
         self = try XMLHash.parse(soapString: string).value()
     }
 }
+
+extension StudentVueApi.HealthImmunizationListing: Identifiable, Equatable {
+    public var id: String {
+        accessGU
+    }
+
+    public static func == (lhs: StudentVueApi.HealthImmunizationListing, rhs: StudentVueApi.HealthImmunizationListing) -> Bool {
+        lhs.id == rhs.id
+    }
+}
