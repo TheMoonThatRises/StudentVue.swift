@@ -1,6 +1,6 @@
 //
 //  StudentVueScrapper.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 3/8/23.
 //
@@ -196,6 +196,9 @@ public class StudentVueScraper {
     ///    - data: Data to send to the endpoint
     ///    - urlParams: Encoded url params to pass
     ///
+    /// - Throws: `ScraperErrors.responseNot200` if the response code is not 200, `ScraperErrors.emptyData` if the returning data is empty,
+    ///                         or other misc parsing errors
+    ///
     /// - Returns: Data returned by the endpoint
     public func autoThrowApi(endpoint: Endpoints,
                              method: HTTPMethods = .get,
@@ -234,6 +237,8 @@ public class StudentVueScraper {
 
     /// Logs into StudentVue and sets the cookies
     ///
+    /// - Throws: `ScraperErrors.noUsername` if no username was provided, or `ScraperErrors.noPassword` if no password was provided
+    ///
     /// - Returns: The gradebook HTML if successful
     public func login() async throws -> HTMLURLSessionResponse {
         guard !username.isEmpty else {
@@ -256,5 +261,23 @@ public class StudentVueScraper {
     public func logout() async throws -> Bool {
         let response = try await api(endpoint: .login, method: .post, urlParams: ["Logout": "1"])
         return response.response?.statusCode == 200
+    }
+
+    /// Retrieves gradebook by scraping the HTML
+    ///
+    /// - Returns: A class containing an array of `ClassData`
+    public func getGradeBook() async throws -> GradeBook {
+        let response = try await autoThrowApi(endpoint: .gradeBook)
+
+        return try await GradeBook(html: response.html, client: self)
+    }
+
+    /// Retrieves course history by scraping the HTML
+    ///
+    /// - Returns: A class containing an array of `CourseData`
+    public func getCourseHistory() async throws -> CourseHistory {
+        let response = try await autoThrowApi(endpoint: .courseHistory)
+
+        return try await CourseHistory(html: response.html)
     }
 }

@@ -1,6 +1,6 @@
 //
 //  ScraperErrors.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 3/10/23.
 //
@@ -15,6 +15,7 @@ extension StudentVueScraper {
         case noUsername
         case noCredentials
         case responseNot200
+        case invalidWebsiteHTML
         case unknown(message: String?)
     }
 }
@@ -36,6 +37,8 @@ extension StudentVueScraper.ScraperErrors: LocalizedError {
             return "No username provided"
         case .noCredentials:
             return "No username or password provided"
+        case .invalidWebsiteHTML:
+            return "Recieved invalid html from StudentVue website"
         case .unknown(let message):
             return message ?? "An unknown error has occured"
         }
