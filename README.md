@@ -52,7 +52,7 @@ try await client.scraper.logout() // Log out of StudentVue. Returns boolean indi
 You can use the built-in scraper parser to parse specific endpoints. These structs are in the `StudentVueScraper` class and has the `html` parameter for html to parse. Some will include `client` which is of class `StudentVueScraper` which may be used to access additional helper pieces of information. Some endpoints will have built-in class structures
 
 ```swift
-try await client.getCourseHistory() // Returns course history
+try await client.scraper.getCourseHistory() // Returns course history
 ```
 
 ## Library Used
