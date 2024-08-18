@@ -1,6 +1,6 @@
 //
 //  ErrorPage.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 3/15/23.
 //
