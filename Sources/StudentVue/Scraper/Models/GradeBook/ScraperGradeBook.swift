@@ -1,6 +1,6 @@
 //
 //  ScraperGradeBook.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 3/16/23.
 //
@@ -12,7 +12,7 @@ extension StudentVueScraper {
     public struct GradeBook {
         public var classes: [ClassData] = []
 
-        public init(html: String, client: StudentVue) async throws {
+        public init(html: String, client: StudentVueScraper) async throws {
             let doc = try SwiftSoup.parse(html)
 
             let roomRows = try doc.getElementsByClass("row gb-class-header gb-class-row flexbox horizontal")
@@ -123,10 +123,10 @@ extension StudentVueScraper {
                                                         .text()) ?? 0))
                         }
 
-                        let gradeDetails = try await client.scraper.autoThrowApi(endpoint: .loadControl,
-                                                                                 method: .post,
-                                                                                 headerType: .api,
-                                                                                 data: loadControlData.toRequestable())
+                        let gradeDetails = try await client.autoThrowApi(endpoint: .loadControl,
+                                                                         method: .post,
+                                                                         headerType: .api,
+                                                                         data: loadControlData.toRequestable())
 
                         let gradeData = try JSONDecoder().decode(API.self,
                                                                  from: gradeDetails.html.data(using: .utf8) ?? Data())
