@@ -5,6 +5,10 @@
 
 Swift library for interacting with StudentVue's api. This project was heavily influenced by [StudentVue.js](https://github.com/StudentVue/StudentVue.js) and relied on information provided by their [documentation](https://github.com/StudentVue/docs). This library is still a work in progress and if you encounter an issue, feel free to create an [issue](https://github.com/TheMoonThatRises/StudentVue.swift/issues/new) or submit a [pull request](https://github.com/TheMoonThatRises/StudentVue.swift/pulls).
 
+## Documentation
+
+https://themoonthatrises.github.io/documentation/studentvue/
+
 ## Installation
 
 ```swift
@@ -45,33 +49,11 @@ try await client.scraper.login() // Log into StudentVue. NOTE: login returns gra
 try await client.scraper.logout() // Log out of StudentVue. Returns boolean indicating success
 ```
 
-You can use the built-in scraper parser to parse specific endpoints. These structs are in the `StudentVueScraper` class and has the `html` parameter for html to parse. Some will include `client` which is of class `StudentVue` which may be used to access additional helper pieces of information.
+You can use the built-in scraper parser to parse specific endpoints. These structs are in the `StudentVueScraper` class and has the `html` parameter for html to parse. Some will include `client` which is of class `StudentVueScraper` which may be used to access additional helper pieces of information. Some endpoints will have built-in class structures
 
 ```swift
-try await StudentVueScraper.GradeBook(html: try await client.scraper.login(), client: client) // Returns gradebook in an array of `ClassData`
+try await client.getCourseHistory() // Returns course history
 ```
-
-If you require a struct to be Hashable (for iterating in UI), you can create an extension like this:
-
-```swift
-extension StudentVueApi.DistrictInfo: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(districtID)
-    }
-
-    public static func == (lhs: StudentVueApi.DistrictInfo, rhs: StudentVueApi.DistrictInfo) -> Bool {
-        lhs.districtID == rhs.districtID
-    }
-}
-```
-
-## Todo List
-
-- [ ] A website for documentation
-- [ ] More complete structures for returned data
-    - [ ] Use the WSDL file to help with the data structure
-- [ ] Use a proper SOAP handler instead of the "hacky" solution
-- [ ] More complete scraper parser - In progress
 
 ## Library Used
 
