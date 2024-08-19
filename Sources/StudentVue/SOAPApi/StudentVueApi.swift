@@ -33,6 +33,9 @@ public class StudentVueApi {
         case synergyMailGetAttachment = "SynergyMailGetAttachment"
         case updatePXPMessage = "UpdatePXPMessage"
         case studentHealthInfo = "StudentHealthInfo"
+
+        case getSupportedLanguages = "GetSupportedLanguages"
+        case getSoundFileData = "GetSoundFileData"
     }
 
     /// Web services that StudentVue uses. `HDInfoServices` is only used to access the`HDInfoCommunication` endpoint
