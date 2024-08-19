@@ -19,7 +19,7 @@ public extension XMLHash {
     ///
     /// - Returns: An XMLIndexer with only the body of the SOAP response
     class func parse(soapString: String) throws -> XMLIndexer {
-        let request = parse(soapString)["soap:Envelope"]["soap:Body"]["ProcessWebServiceRequestResponse"]["ProcessWebServiceRequestResult"]
+        let request = parse(soapString)["soap:Envelope"]["soap:Body"]["ProcessWebServiceRequestMultiWebResponse"]["ProcessWebServiceRequestMultiWebResult"]
 
         do {
             for child in request.children {

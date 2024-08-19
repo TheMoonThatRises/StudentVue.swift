@@ -73,7 +73,7 @@ public class StudentVueApi {
         sessionConfig.httpAdditionalHeaders = [
             "Accept": "*/*",
             "Content-Type": "text/xml; charset=utf-8",
-            "SOAPAction": "http://edupoint.com/webservices/ProcessWebServiceRequest",
+            "SOAPAction": "http://edupoint.com/webservices/ProcessWebServiceRequestMultiWeb",
             "Connection": "close",
             "Accept-Language": "en-us",
             "Accept-Encoding": "gzip, deflate"

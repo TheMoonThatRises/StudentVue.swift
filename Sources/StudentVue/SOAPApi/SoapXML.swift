@@ -40,7 +40,7 @@ struct SoapXML {
         <?xml version="1.0" encoding="UTF-8"?>
         <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <soap:Body>
-                <ProcessWebServiceRequest xmlns="http://edupoint.com/webservices/">
+                <ProcessWebServiceRequestMultiWeb xmlns="http://edupoint.com/webservices/">
                      <userID>\(userID)</userID>
                      <password>\(password)</password>
                      <skipLoginLog>\(skipLoginLog ? 1 : 0)</skipLoginLog>
@@ -48,7 +48,7 @@ struct SoapXML {
                      <webServiceHandleName>\(webServiceHandleName.rawValue)</webServiceHandleName>
                      <methodName>\(methodName.rawValue)</methodName>
                      <paramStr>\(formattedParamStr)</paramStr>
-                </ProcessWebServiceRequest>
+                </ProcessWebServiceRequestMultiWeb>
             </soap:Body>
         </soap:Envelope>
         """
