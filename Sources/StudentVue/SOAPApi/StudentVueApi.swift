@@ -154,6 +154,29 @@ public class StudentVueApi {
         }
     }
 
+    /// Higher level function to access StudentVue's API. Automatically throws custom errors
+    ///
+    /// - Parameters:
+    ///   - endpoint: The endpoint to access
+    ///   - methodName: The method to use, determing what data is being requested or sent
+    ///   - serviceHandle: The service handle to use
+    ///   - params: Parameters to be sent. Uses a nested dictionary where the outer key is the tag name. The inner dictionary are the attributes, where the key "Value" is the tag content
+    ///
+    /// - Throws: `Error` or `StudentVueErrors`. An error thrown by URLSession or no response returned
+    ///
+    /// - Returns: The XMLIndexer parsed from the response from the StudentVue API
+    public func xmlServiceRequest(endpoint: Endpoints = .pxpCommunication,
+                                  methodName: Methods,
+                                  serviceHandle: WebServices = .pxpWebServices,
+                                  params: [String: [String: String]] = [:]) async throws -> XMLIndexer {
+        let result = try await makeServiceRequest(endpoint: endpoint,
+                                                  methodName: methodName,
+                                                  serviceHandle: serviceHandle,
+                                                  params: params)
+
+        return try XMLHash.parse(soapString: result)
+    }
+
     /// Gets districts near the given zip code
     ///
     /// - Parameter zip: The zip code to search for near-by districts that use StudentVue
