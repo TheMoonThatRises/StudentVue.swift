@@ -177,6 +177,23 @@ public class StudentVueApi {
         return try XMLHash.parse(soapString: result)
     }
 
+    ///  Checks validity of user credentials quickly
+    ///
+    ///  - Throws: `Error` some other error has occured when api request was sent
+    ///
+    ///  - Returns: Success or not
+    public func checkCredentials() async throws -> Bool {
+        do {
+            _ = try await xmlServiceRequest(methodName: .getSoundFileData)
+
+            return true
+        } catch StudentVueErrors.invalidCredentials {
+            return false
+        } catch {
+            throw error
+        }
+    }
+
     /// Gets districts near the given zip code
     ///
     /// - Parameter zip: The zip code to search for near-by districts that use StudentVue

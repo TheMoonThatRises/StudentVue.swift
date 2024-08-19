@@ -14,6 +14,7 @@ extension StudentVueApi {
         case clientNotIntialised
         case noUsername
         case noPassword
+        case invalidCredentials
         case soapError(String)
     }
 }
@@ -31,6 +32,8 @@ extension StudentVueApi.StudentVueErrors {
             return "No username provided"
         case .noPassword:
             return "No password provided"
+        case .invalidCredentials:
+            return "Invalid user id or password"
         case .soapError(let string):
             return "Soap request returned error: \(string)"
         }

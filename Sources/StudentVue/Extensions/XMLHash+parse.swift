@@ -24,11 +24,15 @@ public extension XMLHash {
         do {
             for child in request.children {
                 for attr in XMLHash.errorAttributes {
-                    guard let attrValue = child.element?.attribute(by: attr)?.text else {
+                    guard let attrValue = child.element?.attribute(by: attr)?.text.lowercased() else {
                         continue
                     }
 
-                    throw StudentVueApi.StudentVueErrors.soapError(attrValue)
+                    if attrValue.contains("user id") || attrValue.contains("password") {
+                        throw StudentVueApi.StudentVueErrors.invalidCredentials
+                    } else {
+                        throw StudentVueApi.StudentVueErrors.soapError(attrValue)
+                    }
                 }
             }
         } catch let error as StudentVueApi.StudentVueErrors {
