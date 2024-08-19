@@ -158,7 +158,7 @@ extension StudentVueApi {
                                                  conSchTermIndex: try element.value(ofAttribute: "ConSchTermIndex"),
                                                  schoolName: try element.value(ofAttribute: "SchoolName"),
                                                  conSchErrorMessage: try element.value(ofAttribute: "ConSchErrorMessage"),
-                                                 conSchClassLists: try element["ConSchClassLists"].value())
+                                                 conSchClassLists: try element["ConSchClassLists"]["ClassListing"].value())
         }
     }
 
