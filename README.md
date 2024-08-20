@@ -5,6 +5,8 @@
 
 Swift library for interacting with StudentVue's api. This project was heavily influenced by [StudentVue.js](https://github.com/StudentVue/StudentVue.js) and relied on information provided by their [documentation](https://github.com/StudentVue/docs). This library is still a work in progress and if you encounter an issue, feel free to create an [issue](https://github.com/TheMoonThatRises/StudentVue.swift/issues/new) or submit a [pull request](https://github.com/TheMoonThatRises/StudentVue.swift/pulls).
 
+Checkout this project in action here: [**PortalBook** by TheMoonThatRises](https://github.com/TheMoonThatRises/PortalBook)
+
 ## Documentation
 
 https://themoonthatrises.github.io/documentation/studentvue/
