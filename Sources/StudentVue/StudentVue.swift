@@ -48,4 +48,13 @@ public class StudentVue {
         self.api.updateCredentials(domain: domain, username: username, password: password)
         self.scraper.updateCredentials(domain: domain, username: username, password: password)
     }
+
+    ///  Checks validity of user credentials quickly
+    ///
+    ///  - Throws: `Error` some other error has occured when api request was sent
+    ///
+    ///  - Returns: Success or not
+    public func checkCredentials() async throws -> Bool {
+        return try await api.checkCredentials()
+    }
 }

@@ -187,7 +187,7 @@ public class StudentVueApi {
     ///  - Throws: `Error` some other error has occured when api request was sent
     ///
     ///  - Returns: Success or not
-    public func checkCredentials() async throws -> Bool {
+    internal func checkCredentials() async throws -> Bool {
         do {
             _ = try await xmlServiceRequest(methodName: .getSoundFileData)
 
