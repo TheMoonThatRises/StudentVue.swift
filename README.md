@@ -9,7 +9,7 @@ Checkout this project in action here: [**PortalBook** by TheMoonThatRises](https
 
 ## Documentation
 
-https://themoonthatrises.github.io/documentation/studentvue/
+Read the documentation here: [https://themoonthatrises.github.io/documentation/studentvue/](https://themoonthatrises.github.io/documentation/studentvue/)
 
 ## Installation
 
@@ -35,15 +35,41 @@ With the client initialized, you can access information from the official api by
 let gradebook = try await client.api.getGradeBook()
 ```
 
+For checking the validity of credentials use the `checkCredentials` method in the API. This method is the fastest way to check the validity of the input credentials, and should resolve in about 0.7 seconds.
+
+```swift
+let isCredentialsValid = try await client.api.checkCredentials()
+```
+
+You can use the built-in scraper parser to parse specific endpoints. These structs are in the `StudentVueScraper` class and has the `html` parameter for html to parse. Some will include `client` which is of class `StudentVueScraper` which may be used to access additional helper pieces of information. Some endpoints will have built-in class structures
+
+```swift
+try await client.scraper.getCourseHistory() // Returns course history
+```
+
+Lower level access is possible through both the API and the Scraper. Read the documentation for more information about available methods. If the specific endpoint you are looking for is not incorporated in the endpoint or methods enum, you can extend the enum and add more. More methods and endpoints can be discovered by installing the official StudentVUE app and running MITMProxy.
+
+```swift
+extension StudentVueApi.Methods {
+    static let anotherMethod = StudentVueApi.Methods(rawValue: "AnotherMethod")
+}
+
+if let anotherMethod = StudentVueApi.Methods.anotherMethod {
+    let item = try await client.api.makeServiceRequest(methodName: anotherMethod)
+}
+
+try await client.scraper.autoThrowApi(endpoint: .attendance)
+```
+
 ### Static functions
 
-For some functions, logging in is not required, such as getting district zip codes.
+For some functions, logging in is not required, such as getting district zip codes. Note that `getDistricts` is an endpoint that has rate limits, so be careful when using it with updating UI.
 
 ```swift
 let districts = try await client.api.getDistricts(zip: "a zip code")
 ```
 
-You can also use the scraper which gives more information and functionality, but is not fully implemented. With the following example you can assess whether or not a username and password combination are valid. The line below that will you out of StudentVue. More and easier functionality will be added to the scraper in the future.
+You can also use the scraper which gives more information and functionality, but is not fully implemented. The line below that will log the scraper in and out of StudentVue. More and easier functionality will be added to the scraper in the future.
 
 ```swift
 try await client.scraper.login() // Log into StudentVue. NOTE: login returns gradebook html
@@ -51,10 +77,10 @@ try await client.scraper.login() // Log into StudentVue. NOTE: login returns gra
 try await client.scraper.logout() // Log out of StudentVue. Returns boolean indicating success
 ```
 
-You can use the built-in scraper parser to parse specific endpoints. These structs are in the `StudentVueScraper` class and has the `html` parameter for html to parse. Some will include `client` which is of class `StudentVueScraper` which may be used to access additional helper pieces of information. Some endpoints will have built-in class structures
+Because the username and password are not publicly accessible variables within the library, a hash function is provided to check if the stored username, password, and domain combination is similar to others you may have stored.
 
 ```swift
-try await client.scraper.getCourseHistory() // Returns course history
+let hash = client.getAccountHash()
 ```
 
 ## Library Used
