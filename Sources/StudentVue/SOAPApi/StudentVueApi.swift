@@ -52,7 +52,7 @@ public class StudentVueApi {
 
     /// The username to log into StudentVue's API
     private var username: String
-    /// The password to log into StudentVue's API/
+    /// The password to log into StudentVue's API
     private var password: String
 
     /// Creates a new URLSession for the library to use
@@ -64,8 +64,6 @@ public class StudentVueApi {
     ///   - domain: Domain of the school that uses StudentVue. Should be something like `something.edupoint.com`
     ///   - username: The username of the student's information to access
     ///   - password: The password of the student's information to access
-    ///
-    /// - Returns: A new StudentVueApi client
     public init(domain: String, username: String, password: String) {
         self.domain = domain
 
@@ -86,6 +84,13 @@ public class StudentVueApi {
         sessionConfig.httpCookieAcceptPolicy = .never
 
         self.session = URLSession(configuration: sessionConfig)
+    }
+
+    /// Retrieves account details as a hash
+    ///
+    /// - Returns: Hash of username, password, and domain
+    internal func getAccountHash() -> String {
+        return AccountHasher.hash(username: username, password: password, domain: domain)
     }
 
     /// Updates the credentials of the user
