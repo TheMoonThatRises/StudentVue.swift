@@ -8,15 +8,22 @@
 import Foundation
 
 public class StudentVueScraper {
+    /// The domain of the StudentVue website.
     private var domain: String
 
+    /// The user agent to use when accessing scraping the StudentVue website.
     private static let userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) " +
     "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15"
+
+    /// The base URL to access StudentVue's website.
     private var base: String {
         "https://\(domain)"
     }
 
+    /// The username to log into StudentVue's website.
     private var username: String
+
+    /// The password to log into StudentVue's website.
     private var password: String
 
     public struct URLSessionResponse {
@@ -30,30 +37,6 @@ public class StudentVueScraper {
         public var urlSessionResponse: URLSessionResponse
     }
 
-    // All of StudentVue's endpoint
-    public enum Endpoints: String {
-        case assessment = "/PXP2_Assessment.aspx"
-        case attendence = "/PXP2_Attendance.aspx"
-        case calendar = "/PXP2_Calendar.aspx"
-        case classSchedule = "/PXP2_ClassSchedule.aspx"
-        case conference = "/PXP2_Conference.aspx"
-        case courseHistory = "/PXP2_CourseHistory.aspx"
-        case courseRequest = "/PXP2_CourseRequest.aspx"
-        case graduationRequirements = "/PXP2_UserModule.aspx"
-        case digitalLocker = "/PXP2_DigitalLocker.aspx"
-        case fee = "/PXP2_Fee.aspx"
-        case gradeBook = "/PXP2_Gradebook.aspx"
-        case health = "/PXP2_Health.aspx"
-        case login = "/PXP2_Login_Student.aspx"
-        case mail = "/PXP2_Messages.aspx"
-        case mtss = "/PXP2_MTSS.aspx"
-        case reportCard = "/PXP2_ReportCard.aspx"
-        case schoolInformation = "/PXP2_SchoolInformation.aspx"
-        case studentInfo = "/PXP2_Student.aspx"
-
-        case loadControl = "/service/PXP2Communication.asmx/LoadControl"
-    }
-
     public enum HTTPMethods: String {
         case get, post
     }
@@ -62,18 +45,22 @@ public class StudentVueScraper {
         case scrape, api
     }
 
+    /// Creates a new URLSession for the scraper section of the library to use.
     private let scraperSession: URLSession
 
-    /// Initializes a new StudentVueScraper client with user credientials
+    /// Initializes a new ``StudentVueScraper`` client with user credientials.
+    ///
+    /// Although this initializers may be used directly, it is best to use
+    /// ``StudentVue/StudentVue/init(domain:username:password:)``.  There are several methods
+    /// contained by ``StudentVueScraper``  that are only accessable through ``StudentVue/StudentVue``.
     ///
     /// - Parameters:
-    ///   - domain: Domain of the school that uses StudentVue. Should be something like `something.edupoint.com`
-    ///   - username: The username of the student's information to access
-    ///   - password: The password of the student's information to access
-    ///
-    /// - Returns: A new StudentVueScraper client
-    init(domain: String, username: String, password: String) {
+    ///   - domain: Domain of the school that uses StudentVue.
+    ///   - username: The username of the student's information to access.
+    ///   - password: The password of the student's information to access.
+    public init(domain: String, username: String, password: String) {
         URLSession.shared.configuration.timeoutIntervalForRequest = 120.0
+
         self.domain = domain
         self.username = username
         self.password = password
@@ -93,12 +80,15 @@ public class StudentVueScraper {
         self.scraperSession = URLSession(configuration: sessionConfig)
     }
 
-    /// Updates the credentials of the user
+    /// Updates the credentials of the user.
+    ///
+    /// This is an internal function that should only be used by and accessed from
+    /// ``StudentVue/StudentVue/updateCredentials(domain:username:password:)``.
     ///
     /// - Parameters:
-    ///   - domain: The new domain
-    ///   - username: The new username
-    ///   - password: The new password
+    ///   - domain: The new domain.
+    ///   - username: The new username.
+    ///   - password: The new password.
     internal func updateCredentials(domain: String? = nil, username: String? = nil, password: String? = nil) {
         if let domain = domain {
             self.domain = domain
@@ -113,11 +103,22 @@ public class StudentVueScraper {
         }
     }
 
-    /// Build the header of the request with the corresponding type
+    /// Builds the header of the request with the corresponding type.
+    ///
+    /// Headers are different when scraping the API or the HTML content of the website.
+    ///
+    /// ```swift
+    /// var request = URLRequest(url: query)
+    ///
+    /// request.httpMethod = StudentVueScraper.HTTPMethods.get.rawValue
+    /// request.httpBody = data
+    ///
+    /// buildHeaders(request: &request, headerType: .scrape)
+    /// ```
     ///
     /// - Parameters:
-    ///    - request: The request to set headers
-    ///    - headerType: The method the request is using to specialise the header
+    ///    - request: The request to update the headers for.
+    ///    - headerType: The method the request is using to specialise the header.
     private func buildHeaders(request: inout URLRequest, headerType: HeaderType) {
         var accept: String
         var contentType: String
@@ -148,16 +149,24 @@ public class StudentVueScraper {
         request.setValue("\(base)\(Endpoints.login.rawValue)", forHTTPHeaderField: "Referer")
     }
 
-    /// Lowest level scraper call without throwing types
+    /// Lowest level scraper call.
+    ///
+    /// This method does not throw custom error types, and only throws URL requests errors. It is
+    /// recommended to use
+    /// ``StudentVueScraper/autoThrowApi(endpoint:method:headerType:data:urlParams:)``
+    /// instead.
+    ///
+    /// - Important: It is required to first login with ``StudentVueScraper/login()`` before
+    ///              accessing endpoints with ``StudentVueScraper``.
     ///
     /// - Parameters:
-    ///    - endpoint: The endpoint to use
-    ///    - method: The method to use when accessing the endpoint
-    ///    - headerType: The way to access the endpoint
-    ///    - data: Data to send to the endpoint
-    ///    - urlParams: Encoded url params to pass
+    ///    - endpoint: The endpoint to use.
+    ///    - method: The method to use when accessing the endpoint.
+    ///    - headerType: The way to access the endpoint.
+    ///    - data: Data to send to the endpoint.
+    ///    - urlParams: Encoded url params to pass.
     ///
-    /// - Returns: Data returned by the endpoint
+    /// - Returns: Data returned by the endpoint.
     public func api(endpoint: Endpoints,
                     method: HTTPMethods = .get,
                     headerType: HeaderType = .scrape,
@@ -187,19 +196,28 @@ public class StudentVueScraper {
         return URLSessionResponse(data: response.0, response: response.1 as? HTTPURLResponse)
     }
 
-    /// Scraper call with specific error messages
+    /// Scraper call with specific error messages.
+    ///
+    /// This is a wrapper around
+    /// ``StudentVueScraper/api(endpoint:method:headerType:data:urlParams:)``
+    /// with custom error messages and returns ``HTMLURLSessionResponse`` instead of
+    /// ``URLSessionResponse``.
+    ///
+    /// - Important: It is required to first login with ``StudentVueScraper/login()`` before
+    ///              accessing endpoints with ``StudentVueScraper``.
     ///
     /// - Parameters:
-    ///    - endpoint: The endpoint to use
-    ///    - method: The method to use when accessing the endpoint
-    ///    - headerType: The way to access the endpoint
-    ///    - data: Data to send to the endpoint
-    ///    - urlParams: Encoded url params to pass
+    ///    - endpoint: The endpoint to use.
+    ///    - method: The method to use when accessing the endpoint.
+    ///    - headerType: The way to access the endpoint.
+    ///    - data: Data to send to the endpoint.
+    ///    - urlParams: Encoded url params to pass.
     ///
-    /// - Throws: `ScraperErrors.responseNot200` if the response code is not 200, `ScraperErrors.emptyData` if the returning data is empty,
-    ///                         or other misc parsing errors
+    /// - Throws: ``ScraperErrors/responseNot200`` if the response code is not 200,
+    ///           ``ScraperErrors/emptyData`` if the returning data is empty, or other
+    ///           misc parsing errors.
     ///
-    /// - Returns: Data returned by the endpoint
+    /// - Returns: Data returned by the endpoint.
     public func autoThrowApi(endpoint: Endpoints,
                              method: HTTPMethods = .get,
                              headerType: HeaderType = .scrape,
@@ -224,22 +242,38 @@ public class StudentVueScraper {
         return HTMLURLSessionResponse(html: html, response: httpResponse, urlSessionResponse: response)
     }
 
-    /// Generates a new session id to scrape the website
+    /// Generates a new session id to scrape the website.
     ///
-    /// - Returns: The variable state of the website
+    /// - Throws: ``ScraperErrors/responseNot200`` if the response code is not 200,
+    ///           ``ScraperErrors/emptyData`` if the returning data is empty, or other
+    ///           misc parsing errors.
+    ///
+    /// - Returns: The variable state of the website.
     private func generateSessionId() async throws -> VueState {
         let getVueState = try await autoThrowApi(endpoint: .login,
-                                                               method: .get,
-                                                               urlParams: ["regenerateSessionId": "True"])
+                                                 method: .get,
+                                                 urlParams: ["regenerateSessionId": "True"])
 
         return try VueState(html: getVueState.html)
     }
 
-    /// Logs into StudentVue and sets the cookies
+    /// Logs into StudentVue and sets the cookies.
     ///
-    /// - Throws: `ScraperErrors.noUsername` if no username was provided, or `ScraperErrors.noPassword` if no password was provided
+    /// This method will return the gradebook when the login finishes logging in.
     ///
-    /// - Returns: The gradebook HTML if successful
+    /// - Important: It is required to first login before accessing endpoints with
+    ///              ``StudentVueScraper``.
+    ///
+    /// - Warning: This method will take a long time to complete (~5s); it is recommended to
+    ///            put this method call into a `Task`.
+    ///
+    /// - Throws: ``ScraperErrors/noUsername`` if no username was provided, or
+    ///           ``ScraperErrors/noPassword`` if no password was provided. This may also throw
+    ///           ``ScraperErrors/responseNot200`` if the response code is not 200, or
+    ///           ``ScraperErrors/emptyData`` if the returning data is empty, or other
+    ///            misc parsing errors.
+    ///
+    /// - Returns: The gradebook HTML if successful.
     public func login() async throws -> HTMLURLSessionResponse {
         guard !username.isEmpty else {
             throw ScraperErrors.noUsername
@@ -255,26 +289,36 @@ public class StudentVueScraper {
         return try await autoThrowApi(endpoint: .login, method: .post, data: loginData.data)
     }
 
-    /// Log out of StudentVue
+    /// Logs out of StudentVue.
     ///
-    /// - Returns: True if logout was successful
+    /// - Important: Once logged out, accessing other endpoints may return an error without
+    ///              logging in again with ``StudentVueScraper/login()``.
+    ///
+    /// - Returns: True if logout was successful.
     public func logout() async throws -> Bool {
         let response = try await api(endpoint: .login, method: .post, urlParams: ["Logout": "1"])
         return response.response?.statusCode == 200
     }
 
-    /// Retrieves gradebook by scraping the HTML
+    /// Retrieves gradebook by scraping the HTML.
     ///
-    /// - Returns: A class containing an array of `ClassData`
+    /// - Important: It is required to first login with ``StudentVueScraper/login()`` before
+    ///              accessing this endpoint.
+    ///
+    /// - Returns: A class containing an array of ``ClassData``.
+    @available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.GradeBook instead.")
     public func getGradeBook() async throws -> GradeBook {
         let response = try await autoThrowApi(endpoint: .gradeBook)
 
         return try await GradeBook(html: response.html, client: self)
     }
 
-    /// Retrieves course history by scraping the HTML
+    /// Retrieves course history by scraping the HTML.
     ///
-    /// - Returns: A class containing an array of `CourseData`
+    /// - Important: It is required to first login with ``StudentVueScraper/login()`` before
+    ///              accessing this endpoint.
+    ///
+    /// - Returns: A class containing an array of ``CourseData``.
     public func getCourseHistory() async throws -> CourseHistory {
         let response = try await autoThrowApi(endpoint: .courseHistory)
 

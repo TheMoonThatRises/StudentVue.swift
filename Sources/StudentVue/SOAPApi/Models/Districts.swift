@@ -1,6 +1,6 @@
 //
 //  Districts.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/11/23.
 //
@@ -10,9 +10,16 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct DistrictInfo: XMLObjectDeserialization {
+        /// ID of the district.
         public var districtID: String
+
+        /// Name of the district.
         public var districtName: String
+
+        /// Address of the district.
         public var districtAddress: String
+
+        /// StudentVue URL address.
         public var districtURL: URL
 
         public static func deserialize(_ element: XMLIndexer) throws -> DistrictInfo {
@@ -24,6 +31,7 @@ extension StudentVueApi {
     }
 
     public struct Districts: XMLObjectDeserialization {
+        /// List of districts.
         public var districts: [DistrictInfo]
 
         public static func deserialize(_ element: XMLIndexer) throws -> Districts {

@@ -1,6 +1,6 @@
 //
 //  GradeBook.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/12/23.
 //
@@ -10,9 +10,16 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct GradingPeriod: XMLObjectDeserialization {
+        /// Index of the grading period.
         public var index: Int?
+
+        /// Name of the grading period.
         public var gradePeriodName: String
+
+        /// Start date of the grading period.
         public var startDate: Date
+
+        /// End date of the grading period.
         public var endDate: Date
 
         public static func deserialize(_ element: XMLIndexer) throws -> GradingPeriod {
@@ -23,19 +30,42 @@ extension StudentVueApi {
         }
     }
 
+    /// Resource teacher provides with an assignment.
     public struct GradeBookResource: XMLObjectDeserialization {
+        /// Class ID.
         public var classID: String
+
+        /// Type of resource.
         public var fileType: String?
+
+        /// Gradebook ID.
         public var gradebookID: String
+
+        /// Date resource was created.
         public var resourceDate: Date
+
+        /// Description of the resource.
         public var resourceDescription: String
+
+        /// Resource ID.
         public var resourceID: String
+
+        /// Name of the resource.
         public var resourceName: String
+
+        /// Unkown.
         public var sequence: String
+
+        /// Teacher ID.
         public var teacherID: String
+
+        /// Unkown.
         public var type: String // TODO: Find other data types
 
+        /// URL of the resource if provided.
         public var url: URL?
+
+        /// Unkown.
         public var serverFileName: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> GradeBookResource {
@@ -54,22 +84,54 @@ extension StudentVueApi {
         }
     }
 
+    /// Assignment assigned by the teacher entered into the gradebook.
     public struct GradeBookAssignment: XMLObjectDeserialization {
+        /// Assignment ID.
         public var gradeBookID: String
+
+        /// Name of the assignment.
         public var measure: String
+
+        /// Assignment type (e.x. participation, test).
         public var type: String
+
+        /// Assignment date.
         public var date: Date
+
+        /// Due date of the assignment.
         public var dueDate: Date
+
+        /// Type of score.
         public var scoreType: String
+
+        /// Points recieved.
         public var points: String
+
+        /// Total seconds since the assignment was posted.
         public var totalSecondsSincePost: Double
+
+        /// Unkown.
         public var notes: String
+
+        /// Student ID.
         public var teacherID: String
+
+        /// Teacher ID.
         public var studentID: String
+
+        /// Description of the assignment.
         public var measureDescription: String
+
+        /// If the assignment has a Drop Box.
         public var hasDropBox: Bool
+
+        /// Unkown.
         public var dropStartDate: Date
+
+        /// Unkown.
         public var dropEndDate: Date
+
+        /// A list of resources the teacher provides with the assignment.
         public var resources: [GradeBookResource]
 
         public static func deserialize(_ element: XMLIndexer) throws -> GradeBookAssignment {
@@ -92,10 +154,18 @@ extension StudentVueApi {
         }
     }
 
+    /// Grading period assignments and grade.
     public struct Grade: XMLObjectDeserialization {
+        /// Name of the grading period.
         public var gradePeriodName: String
+
+        /// Letter grade when calculated.
         public var calculatedGrade: String
+
+        /// Raw grade recieved.
         public var calculatedGradeRaw: Float
+
+        /// List of assignments in the grading period.
         public var assignments: [GradeBookAssignment]
 
         public static func deserialize(_ element: XMLIndexer) throws -> Grade {
@@ -106,15 +176,33 @@ extension StudentVueApi {
         }
     }
 
+    /// Course taken by the student in the gradebook.
     public struct Course: XMLObjectDeserialization {
+        /// Unkown.
         public var usesRichContent: Bool
+
+        /// Period of the class.
         public var period: Int
+
+        /// Name of the class.
         public var name: String
+
+        /// Room name in the school.
         public var room: String
+
+        /// Name of the teacher.
         public var teacher: String
+
+        /// Teacher email for the course.
         public var teacherEmail: String
+
+        /// GU of the teacher.
         public var teacherGU: String
+
+        /// Cut-off bar for when the grade should be highlighted(?).
         public var highlightPercentageCutOffForProgressBar: Int
+
+        /// List of grades throughout grading periods in the course.
         public var grades: [Grade]
 
         public static func deserialize(_ element: XMLIndexer) throws -> Course {
@@ -130,9 +218,15 @@ extension StudentVueApi {
         }
     }
 
+    /// Gradebook for the student.
     public struct GradeBook: XMLObjectDeserialization {
+        /// List of available grading periods.
         public var gradingPeriods: [GradingPeriod]
+
+        /// Current grading period.
         public var cuarrentGradingPeriod: GradingPeriod
+
+        /// List of courses taken by the student with their grades.
         public var courses: [Course]
 
         public static func deserialize(_ element: XMLIndexer) throws -> GradeBook {

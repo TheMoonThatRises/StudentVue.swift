@@ -9,7 +9,9 @@ import Foundation
 import SwiftSoup
 
 extension StudentVueScraper {
+    @available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.GradeBook instead.")
     public struct GradeBook {
+        /// List of classes currently taken with grades and assignments.
         public var classes: [ClassData] = []
 
         public init(html: String, client: StudentVueScraper) async throws {

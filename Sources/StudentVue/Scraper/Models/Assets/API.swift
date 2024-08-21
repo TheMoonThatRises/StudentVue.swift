@@ -1,6 +1,6 @@
 //
 //  API.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 3/22/23.
 //
@@ -8,11 +8,11 @@
 import Foundation
 
 extension StudentVueScraper {
-    struct APIData: Decodable {
+    internal struct APIData: Decodable {
         var html: String
     }
 
-    struct APIResult: Decodable {
+    internal struct APIResult: Decodable {
         enum CodingKeys: String, CodingKey {
             case type = "__type"
             case error = "Error"
@@ -26,7 +26,9 @@ extension StudentVueScraper {
         var dataType: String
     }
 
-    struct API: Decodable {
+    /// This parses scraped data from StudentVue's website and uses `CodingKeys` to convert
+    /// unlegable keys into more obvious names.
+    internal struct API: Decodable {
         enum CodingKeys: String, CodingKey {
             case result = "d"
         }

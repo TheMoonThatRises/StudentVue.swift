@@ -9,21 +9,25 @@ import Foundation
 import SwiftSoup
 
 extension StudentVueScraper {
+    @available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.GradeBook instead.")
     public struct PointStruct {
         public var score: Double
         public var outOf: Double
     }
 
+    @available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.GradeBook instead.")
     public struct ClassGrades {
         public var mark: String
         public var count: Int
     }
 
+    @available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.GradeBook instead.")
     public struct GradeHistory {
         public var date: Date
         public var score: Int
     }
 
+    @available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.GradeBook instead.")
     public struct Weight {
         public var name: String
         public var weight: Int
@@ -31,6 +35,7 @@ extension StudentVueScraper {
         public var percentOfTotal: Double
     }
 
+    @available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.GradeBook instead.")
     public struct ClassData {
         public var guid: String
         public var teacher: String
@@ -52,6 +57,7 @@ extension StudentVueScraper {
     }
 }
 
+@available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.GradeBook instead.")
 extension StudentVueScraper.ClassData {
     init() {
         self.init(guid: "",
@@ -86,6 +92,7 @@ extension StudentVueScraper.ClassData {
     }
 }
 
+@available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.GradeBook instead.")
 extension StudentVueScraper.Weight {
     public var computedWeight: Double {
         Double(weight) * (percent / 100)

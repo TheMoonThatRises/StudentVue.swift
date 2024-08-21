@@ -9,6 +9,7 @@ import Foundation
 import SwiftSoup
 
 extension StudentVueScraper {
+    @available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.StudentInfo instead.")
     public struct StudentInfo {
         public var studentInfo: StudentInfoData
 

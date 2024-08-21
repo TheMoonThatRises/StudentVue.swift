@@ -1,6 +1,6 @@
 //
 //  StudentInfo.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/12/23.
 //
@@ -9,12 +9,25 @@ import Foundation
 import SWXMLHash
 
 extension StudentVueApi {
+    /// Emergency contacts provided by the parent of the student when registering their student
+    /// through StudentVue.
     public struct EmergencyContact: XMLObjectDeserialization {
+        /// Emergency contact name.
         public var name: String
+
+        /// Relationship between the emergency contact and the student.
         public var relationship: String
+
+        /// Home phone number.
         public var homePhone: String
+
+        /// Work phone number.
         public var workPhone: String
+
+        /// Other phone number.
         public var otherPhone: String
+
+        /// Mobile phone number.
         public var mobilePhone: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> EmergencyContact {
@@ -27,10 +40,19 @@ extension StudentVueApi {
         }
     }
 
+    /// The physican of the student submitted by the parent when registering their student
+    /// through StudentVue.
     public struct PhysicianInfo: XMLObjectDeserialization {
+        /// Physician name.
         public var name: String
+
+        /// Physician working hospital.
         public var hospital: String
+
+        /// Physician's phone number.
         public var phone: String
+
+        /// Extension for the phone number.
         public var extn: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> PhysicianInfo {
@@ -41,10 +63,19 @@ extension StudentVueApi {
         }
     }
 
+    /// The dentist of the student submitted by the parent when registering their student
+    /// through StudentVue.
     public struct DentistInfo: XMLObjectDeserialization {
+        /// Dentist name.
         public var name: String
+
+        /// Dentist's office.
         public var office: String
+
+        /// Dentist's phone number.
         public var phone: String
+
+        /// Extension for the phone number.
         public var extn: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> DentistInfo {
@@ -55,12 +86,24 @@ extension StudentVueApi {
         }
     }
 
+    /// Items defined for the student automatically.
     public struct UserDefinedItem: XMLObjectDeserialization {
+        /// Name of the item.
         public var itemLabel: String
+
+        /// Type of the item.
         public var itemType: String
+
+        /// Unkown.
         public var sourceObject: String
+
+        /// Unkown.
         public var sourceElement: String
+
+        /// Unkown.
         public var vcid: String
+
+        /// The value of the item.
         public var value: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> UserDefinedItem {
@@ -73,31 +116,82 @@ extension StudentVueApi {
         }
     }
 
+    /// Information about the student. Some information is submitted by the parent
+    /// while other information may be automatically assigned.
     public struct StudentInfo: XMLObjectDeserialization {
+        /// Unkown.
         public var lockerInfoRecords: String? // TODO: Find data type
+
+        /// Formatted full name of the student.
         public var formattedName: String
+
+        /// Student school ID.
         public var permID: String
+
+        /// Student gender.
         public var gender: String
+
+        /// Current grade of the student.
         public var grade: String
+
+        /// Home address of the student.
         public var address: String
+
+        /// Unkown.
         public var lastNameGoesBy: String?
+
+        /// Student nickname.
         public var nickname: String?
+
+        /// Student birth date.
         public var birthDate: Date
+
+        /// Student school email address.
         public var email: String
+
+        /// Phone number provided by the parent.
         public var phone: String
+
+        /// Spoken language at home.
         public var homeLanguage: String
+
+        /// Name of the school currently attended by the student.
         public var currentSchool: String
+
+        /// Unkown.
         public var track: String? // TODO: Find data type
+
+        /// Student's home room teacher.
         public var homeRoomTeacher: String
+
+        /// Email address of the home room teacher.
         public var homeRoomTeacherEmail: String
+
+        /// GU of the home room teacher.
         public var homeRoomTeacherGU: String
+
+        /// Unkown.
         public var orgYearGU: String
+
+        /// Home room name in the school.
         public var homeRoom: String
+
+        /// Name of the student's counselor.
         public var counselorName: String
+
+        /// Photo of the student. Base64 string.
         public var photo: String?
+
+        /// List of emergency contacts.
         public var emergencyContacts: [EmergencyContact]
+
+        /// Physican information for the student.
         public var physicianInfo: PhysicianInfo
+
+        /// Dentist information for the student.
         public var dentistInfo: DentistInfo
+
+        /// Items automatically created for the student. Usually useful information.
         public var userDefinedItems: [UserDefinedItem]
 
         public static func deserialize(_ element: XMLIndexer) throws -> StudentInfo {

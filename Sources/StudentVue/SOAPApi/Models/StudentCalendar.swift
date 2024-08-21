@@ -1,6 +1,6 @@
 //
 //  StudentCalendar.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/13/23.
 //
@@ -9,16 +9,36 @@ import Foundation
 import SWXMLHash
 
 extension StudentVueApi {
+    /// Calendar event.
     public struct CalendarEventList: XMLObjectDeserialization {
+        /// Calendar event date.
         public var date: Date
+
+        /// Name of the event.
         public var title: String
+
+        /// Unkown.
         public var icon: String?
+
+        /// Unkown.
         public var agu: String?
+
+        /// Type of event.
         public var dayType: String
+
+        /// Event start time.
         public var startTime: String
+
+        /// Unkown.
         public var link: String?
+
+        /// Unkown.
         public var dgu: String?
+
+        /// Unkown.
         public var viewType: Int?
+
+        /// Unkown.
         public var addLinkData: String?
 
         public static func deserialize(_ element: XMLIndexer) throws -> CalendarEventList {
@@ -35,11 +55,21 @@ extension StudentVueApi {
         }
     }
 
+    /// School calendar which contains assignment due dates, holidays, and school breaks.
     public struct StudentCalendar: XMLObjectDeserialization {
+        /// Start date of the school.
         public var schoolStartDate: Date
+
+        /// End date of the school.
         public var schoolEndDate: Date
+
+        /// Starting month of the school.
         public var monthStartDate: Date
+
+        /// Ending month of the school.
         public var monthEndDate: Date
+
+        /// List of events.
         public var eventLists: [CalendarEventList]
 
         public static func deserialize(_ element: XMLIndexer) throws -> StudentCalendar {

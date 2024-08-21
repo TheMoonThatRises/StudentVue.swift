@@ -1,6 +1,6 @@
 //
 //  SchoolInfo.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/13/23.
 //
@@ -9,12 +9,24 @@ import Foundation
 import SWXMLHash
 
 extension StudentVueApi {
+    /// Staff information.
     public struct StaffInfo: XMLObjectDeserialization {
+        /// Name of the staff member.
         public var name: String
+
+        /// Email of the staff member.
         public var email: String
+
+        /// Position of the staff member.
         public var title: String
+
+        /// Phone number of the staff member.
         public var phone: String
+
+        /// Extension for the phone number.
         public var extn: String
+
+        /// Staff GU.
         public var staffGU: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> StaffInfo {
@@ -27,19 +39,45 @@ extension StudentVueApi {
         }
     }
 
+    /// Full information about the school.
     public struct SchoolInfo: XMLObjectDeserialization {
+        /// Name of the school.
         public var school: String
+
+        /// Name of the principal.
         public var principal: String
+
+        /// Address of the school.
         public var address: String
+
+        /// Second address of the school.
         public var address2: String
+
+        /// City location of the school.
         public var city: String
+
+        /// State the school is located in.
         public var state: String
+
+        /// School zip code.
         public var zip: String
+
+        /// School phone number.
         public var phone: String
+
+        /// School Fax.
         public var phone2: String
+
+        /// School homepage.
         public var homepage: URL?
+
+        /// Email of the school's principal.
         public var principalEmail: String
+
+        /// GU of the principal.
         public var principalGU: String
+
+        /// List of staff members at the school.
         public var staffList: [StaffInfo]
 
         public static func deserialize(_ element: XMLIndexer) throws -> SchoolInfo {

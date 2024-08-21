@@ -1,6 +1,6 @@
 //
 //  ReportCards.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/13/23.
 //
@@ -9,6 +9,7 @@ import Foundation
 import SWXMLHash
 
 extension StudentVueApi {
+    /// Undocumented API.
     public struct RCReportingPeriod: XMLObjectDeserialization {
         public var reportingPeriodGU: String
         public var reportingPeriodName: String
@@ -25,6 +26,7 @@ extension StudentVueApi {
         }
     }
 
+    /// Undocumented API.
     public struct ReportCards: XMLObjectDeserialization {
         public var rcReportingPeriods: [RCReportingPeriod]
 
@@ -33,6 +35,7 @@ extension StudentVueApi {
         }
     }
 
+    /// Undocumented API.
     public struct ReportCard: XMLObjectDeserialization {
         public var documentGU: String
         public var fileName: String

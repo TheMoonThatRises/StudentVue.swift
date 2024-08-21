@@ -8,6 +8,7 @@
 import Foundation
 
 extension StudentVueScraper {
+    @available(swift, deprecated: 0.1.0, message: "Use StudentVueApi.GradeBook instead.")
     public struct GradeData: Decodable, Identifiable {
         enum CodingKeys: String, CodingKey {
             case teacher = "Teacher"

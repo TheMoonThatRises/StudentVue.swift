@@ -10,8 +10,12 @@ import SwiftSoup
 
 extension StudentVueScraper {
     public struct CourseHistory {
+        /// List of courses completed by the student.
         public var courseHistory: [CourseHistoryData]
 
+        /// Parses scraped HTML from the StudentVue website.
+        ///
+        /// - Parameter html: Scraped HTML StudentVue website.
         public init(html: String) async throws {
             let doc = try SwiftSoup.parse(html)
 

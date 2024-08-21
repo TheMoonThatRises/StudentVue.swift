@@ -1,6 +1,6 @@
 //
 //  VueState.swift
-//
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 3/8/23.
 //
@@ -8,17 +8,24 @@
 import SwiftSoup
 
 extension StudentVueScraper {
-    struct VueState {
+    internal struct VueState {
+        /// Gets the view state of the StudentVue website and encodes the alphanumerical values.
         var viewState: String {
             didSet {
                 viewState = viewState.percentEncoding(withAllowedCharacters: .alphanumerics)
             }
         }
+
+        /// Gets the view state generator value of the StudentVue website and encodes the
+        /// alphanumerical values.
         var viewStateGenerator: String {
             didSet {
                 viewStateGenerator = viewStateGenerator.percentEncoding(withAllowedCharacters: .alphanumerics)
             }
         }
+
+        /// Gets the event validation state value of the StudentVue website and encodes the
+        /// alphanumerical values.
         var eventValidation: String {
             didSet {
                 eventValidation = eventValidation.percentEncoding(withAllowedCharacters: .alphanumerics)
@@ -31,6 +38,7 @@ extension StudentVueScraper {
             self.eventValidation = eventValidation.percentEncoding(withAllowedCharacters: .alphanumerics)
         }
 
+        /// Parses the scraped contents of the StudentVue website for its state values.
         init(html: String) throws {
             let doc = try SwiftSoup.parse(html)
 

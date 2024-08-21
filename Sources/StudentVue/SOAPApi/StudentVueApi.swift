@@ -1,6 +1,6 @@
 //
 //  StudentVueApi.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/3/23.
 //
@@ -8,62 +8,46 @@
 import Foundation
 import SWXMLHash
 
+/// Class for interacting with StudentVue's official SOAP API.
+///
+/// ``StudentVueApi`` recreates API requests submitted by the official StudentVue app, using
+/// a combination of community compiled requests and responses and through transparent proxies.
+///
+/// New API endpoints and methods can be found by using MITMProxy and the official StudentVue app
+/// installed on a Mac.
+///
+/// A new instance can be created with ``StudentVueApi/init(domain:username:password:)``, but the
+/// prefered method is by using ``StudentVue/StudentVue`` and initializing with
+/// ``StudentVue/StudentVue/init(domain:username:password:)`` and accessing it through its
+/// ``StudentVue/StudentVue/api``.
 public class StudentVueApi {
-    /// Endpoints that StudentVue uses for it's API. `HDInfoCommunication` is only used within `support.edupoint.com`
-    public enum Endpoints: String, Equatable {
-        case pxpCommunication = "PXPCommunication"
-        case hdInfoCommunication = "HDInfoCommunication"
-    }
-
-    /// SOAP methods that StudentVue uses
-    public enum Methods: String {
-        case getMatchingDistrictList = "GetMatchingDistrictList"
-        case getPXPMessages = "GetPXPMessages"
-        case studentCalendar = "StudentCalendar"
-        case attendance = "Attendance"
-        case gradebook = "Gradebook"
-        case studentHWNotes = "StudentHWNotes"
-        case studentInfo = "StudentInfo"
-        case studentClassList = "StudentClassList"
-        case studentSchoolInfo = "StudentSchoolInfo"
-        case getReportCardInitialData = "GetReportCardInitialData"
-        case getReportCardDocumentData = "GetReportCardDocumentData"
-        case getStudentDocumentInitialData = "GetStudentDocumentInitialData"
-        case getContentOfAttachedDoc = "GetContentOfAttachedDoc"
-        case synergyMailGetAttachment = "SynergyMailGetAttachment"
-        case updatePXPMessage = "UpdatePXPMessage"
-        case studentHealthInfo = "StudentHealthInfo"
-
-        case getSupportedLanguages = "GetSupportedLanguages"
-        case getSoundFileData = "GetSoundFileData"
-    }
-
-    /// Web services that StudentVue uses. `HDInfoServices` is only used to access the`HDInfoCommunication` endpoint
-    public enum WebServices: String {
-        case pxpWebServices = "PXPWebServices"
-        case hdInfoServices = "HDInfoServices"
-    }
-
+    /// The domain of the StudentVue API.
     private var domain: String
-    /// The base URL to access StudentVue's APIs
+
+    /// The base URL to access StudentVue's API.
     private var url: String {
         "https://\(domain)/Service/"
     }
 
-    /// The username to log into StudentVue's API
+    /// The username to log into StudentVue's API.
     private var username: String
-    /// The password to log into StudentVue's API
+
+    /// The password to log into StudentVue's API.
     private var password: String
 
-    /// Creates a new URLSession for the library to use
+    /// Creates a new URLSession for the API section of the library to use.
     private let session: URLSession
 
-    /// Initializes a new StudentVueApi client with user credientials
+    /// Initializes a new ``StudentVueApi`` client with user credientials.
+    ///
+    /// Although this initializers may be used directly, it is best to use
+    /// ``StudentVue/StudentVue/init(domain:username:password:)``.  There are several methods
+    /// contained by ``StudentVueApi``  that are only accessable through ``StudentVue/StudentVue``.
     ///
     /// - Parameters:
-    ///   - domain: Domain of the school that uses StudentVue. Should be something like `something.edupoint.com`
-    ///   - username: The username of the student's information to access
-    ///   - password: The password of the student's information to access
+    ///   - domain: Domain of the school that uses StudentVue.
+    ///   - username: The username of the student's information to access.
+    ///   - password: The password of the student's information to access.
     public init(domain: String, username: String, password: String) {
         self.domain = domain
 
@@ -86,19 +70,25 @@ public class StudentVueApi {
         self.session = URLSession(configuration: sessionConfig)
     }
 
-    /// Retrieves account details as a hash
+    /// Retrieves account details as a hash.
+    ///
+    /// This is an internal function that should only be used by and accessed from
+    /// ``StudentVue/StudentVue/getAccountHash()``.
     ///
     /// - Returns: Hash of username, password, and domain
     internal func getAccountHash() -> String {
         return AccountHasher.hash(username: username, password: password, domain: domain)
     }
 
-    /// Updates the credentials of the user
+    /// Updates the credentials of the user.
+    ///
+    /// This is an internal function that should only be used by and accessed from
+    /// ``StudentVue/StudentVue/updateCredentials(domain:username:password:)``.
     ///
     /// - Parameters:
-    ///   - domain: The new domain
-    ///   - username: The new username
-    ///   - password: The new password
+    ///   - domain: The new domain.
+    ///   - username: The new username.
+    ///   - password: The new password.
     internal func updateCredentials(domain: String? = nil, username: String? = nil, password: String? = nil) {
         if let domain = domain {
             self.domain = domain
@@ -113,17 +103,44 @@ public class StudentVueApi {
         }
     }
 
-    /// Lowest level function to access StudentVue's API
+    /// Lowest level function to access StudentVue's API.
+    ///
+    /// This method may be directly called for certain use cases, but most of the time, it is
+    /// better to call dedicated methods created by ``StudentVueApi``. Most of the StudentVue API
+    /// methods are handled with proper structures and typings. However, there are certain methods
+    /// not covered, which makes this method useful. To use API methods not covered by
+    /// ``StudentVueApi/Methods``, you can create an extension of the enum.
+    ///
+    /// ```swift
+    /// extension StudentVueApi.Methods {
+    ///     static let anotherMethod = StudentVueApi.Methods(rawValue: "AnotherMethod")
+    /// }
+    ///
+    /// if let anotherMethod = StudentVueApi.Methods.anotherMethod {
+    ///     let item = try await client.api.makeServiceRequest(methodName: anotherMethod)
+    /// }
+    /// ```
+    ///
+    /// Although it is optional, the `params` parameter has a specific structure that needs to be
+    /// follow. It uses a nested dictionary where the outer key is the tag name. The inner
+    /// dictionary are the attributes, where the key `Value` is the tag content.
+    ///
+    /// ```swift
+    /// let params = ["ReportPeriod": ["Value": "S1"]]
+    ///
+    /// try await client.makeServiceRequest(methodName: .gradebook, params: params)
+    /// ```
     ///
     /// - Parameters:
-    ///   - endpoint: The endpoint to access
-    ///   - methodName: The method to use, determing what data is being requested or sent
-    ///   - serviceHandle: The service handle to use
-    ///   - params: Parameters to be sent. Uses a nested dictionary where the outer key is the tag name. The inner dictionary are the attributes, where the key "Value" is the tag content
+    ///   - endpoint: The endpoint to access.
+    ///   - methodName: The method to use, determing what data is being requested or sent.
+    ///   - serviceHandle: The service handle to use.
+    ///   - params: Parameters to be sent.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession or no
+    ///           response returned.
     ///
-    /// - Returns: The string format of the XML returned from the StudentVue API
+    /// - Returns: A string in the format of an XML returned from the StudentVue API.
     public func makeServiceRequest(endpoint: Endpoints = .pxpCommunication,
                                    methodName: Methods,
                                    serviceHandle: WebServices = .pxpWebServices,
@@ -159,17 +176,50 @@ public class StudentVueApi {
         }
     }
 
-    /// Higher level function to access StudentVue's API. Automatically throws custom errors
+    /// Higher level function to access StudentVue's API.
+    ///
+    /// This function is a wrapper around
+    /// ``StudentVueApi/makeServiceRequest(endpoint:methodName:serviceHandle:params:)``, but
+    /// simply parses the output with ``SWXMLHash/XMLHash/parse(soapString:)`` for easier output handling
+    /// and contains more customized error messages that can be caught.
+    ///
+    /// This method may be directly called for certain use cases, but most of the time, it is
+    /// better to call dedicated methods created by ``StudentVueApi``. Most of the StudentVue API
+    /// methods are handled with proper structures and typings. However, there are certain methods
+    /// not covered, which makes this method useful. To use API methods not covered by
+    /// ``StudentVueApi/Methods``, you can create an extension of the enum.
+    ///
+    /// ```swift
+    /// extension StudentVueApi.Methods {
+    ///     static let anotherMethod = StudentVueApi.Methods(rawValue: "AnotherMethod")
+    /// }
+    ///
+    /// if let anotherMethod = StudentVueApi.Methods.anotherMethod {
+    ///     let item = try await client.api.makeServiceRequest(methodName: anotherMethod)
+    /// }
+    /// ```
+    ///
+    /// Although it is optional, the `params` parameter has a specific structure that needs to be
+    /// follow. It uses a nested dictionary where the outer key is the tag name. The inner
+    /// dictionary are the attributes, where the key `Value` is the tag content.
+    ///
+    /// ```swift
+    /// let params = ["ReportPeriod": ["Value": "S1"]]
+    ///
+    /// try await client.makeServiceRequest(methodName: .gradebook, params: params)
+    /// ```
     ///
     /// - Parameters:
-    ///   - endpoint: The endpoint to access
-    ///   - methodName: The method to use, determing what data is being requested or sent
-    ///   - serviceHandle: The service handle to use
-    ///   - params: Parameters to be sent. Uses a nested dictionary where the outer key is the tag name. The inner dictionary are the attributes, where the key "Value" is the tag content
+    ///   - endpoint: The endpoint to access.
+    ///   - methodName: The method to use, determing what data is being requested or sent.
+    ///   - serviceHandle: The service handle to use.
+    ///   - params: Parameters to be sent.
     ///
-    /// - Throws: `Error` or `StudentVueErrors`. An error thrown by URLSession or no response returned
+    /// - Throws: `Error` or `StudentVueErrors`. The most common error that will be thrown is
+    ///            ``StudentVueErrors/invalidCredentials``. An error thrown by URLSession or no
+    ///            response returned.
     ///
-    /// - Returns: The XMLIndexer parsed from the response from the StudentVue API
+    /// - Returns: The XMLIndexer parsed from the response from the StudentVue API.
     public func xmlServiceRequest(endpoint: Endpoints = .pxpCommunication,
                                   methodName: Methods,
                                   serviceHandle: WebServices = .pxpWebServices,
@@ -182,11 +232,14 @@ public class StudentVueApi {
         return try XMLHash.parse(soapString: result)
     }
 
-    ///  Checks validity of user credentials quickly
+    /// Checks validity of user credentials quickly.
     ///
-    ///  - Throws: `Error` some other error has occured when api request was sent
+    /// This is an internal function that should only be used by and accessed from
+    /// ``StudentVue/StudentVue/checkCredentials()``.
     ///
-    ///  - Returns: Success or not
+    /// - Throws: `Error` some other error has occured when api request was sent.
+    ///
+    /// - Returns: Valid credentials or not.
     internal func checkCredentials() async throws -> Bool {
         do {
             _ = try await xmlServiceRequest(methodName: .getSoundFileData)
@@ -201,11 +254,24 @@ public class StudentVueApi {
 
     /// Gets districts near the given zip code
     ///
-    /// - Parameter zip: The zip code to search for near-by districts that use StudentVue
+    /// This method retrieves nearby districts based on zip codes. Zip codes with no nearby
+    /// districts will return ``Districts`` with an empty list. This function can be accessed
+    /// without credentials or logging in.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// ```swift
+    /// let districts = try await StudentVue.getDistricts(zip: "11001")
+    /// ```
     ///
-    /// - Returns: Information about the near-by district
+    /// - Warning: This API endpoint has a rate limit of about 50-60 requests per minute, and will
+    ///            result a 1 minute timeout. This issue can be accidently caused when having the
+    ///            district bound to a variable in `SwiftUI` and calling this function.
+    ///
+    /// - Parameter zip: The zip code to search for near-by districts that use StudentVue.
+    ///
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///            or no response returned.
+    ///
+    /// - Returns: Information about the near-by district.
     static public func getDistricts(zip: String) async throws -> Districts {
         let studentVueClient = StudentVueApi(domain: "support.edupoint.com", username: "EdupointDistrictInfo", password: "Edup01nt")
         let districts = try await studentVueClient.makeServiceRequest(endpoint: .hdInfoCommunication,
@@ -220,40 +286,47 @@ public class StudentVueApi {
         return try Districts(string: districts)
     }
 
-    /// Get all messages recently sent to the student
+    /// Get all messages recently sent to the student.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///            or no response returned.
     ///
-    /// - Returns: All message information recently sent to the student
+    /// - Returns: All message information recently sent to the student.
     public func getMessages() async throws -> PXPMessages {
         try PXPMessages(string: await makeServiceRequest(methodName: .getPXPMessages))
     }
 
-    /// Gets all recent calendar events such as assignments and breaks
+    /// Gets all recent calendar events such as assignment due dates and school breaks.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///            or no response returned.
     ///
-    /// - Returns: All recent calendar events
+    /// - Returns: All recent calendar events.
     public func getCalendar() async throws -> StudentCalendar {
         try StudentCalendar(string: await makeServiceRequest(methodName: .studentCalendar))
     }
 
-    /// Gets every absence along with other absence information
+    /// Gets every absence along with other absence information.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Important: This method does not return if the student was in the class, only if they were
+    ///              abscent, tardy, or had an activity.
     ///
-    /// - Returns: Every absence by date along with tardies
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
+    ///
+    /// - Returns: Every absence by date along with tardies and activity abscenses.
     public func getAttendence() async throws -> Attendance {
         try Attendance(string: await makeServiceRequest(methodName: .attendance))
     }
 
-    /// Get all items in the gradebook
+    /// Get all classes and assignments in the gradebook.
     ///
-    /// - Parameter reportPeriod: The grading period to get. Default is the current grading period
+    /// - Parameter reportPeriod: The grading period to get. Default is the current grading period.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
     ///
-    /// - Returns: All grades and grading period dates
+    /// - Returns: All grades and grading period dates.
     public func getGradeBook(reportPeriod: String? = nil) async throws -> GradeBook {
         var params: [String: [String: String]] = [:]
 
@@ -264,31 +337,43 @@ public class StudentVueApi {
         return try GradeBook(string: await makeServiceRequest(methodName: .gradebook, params: params))
     }
 
-    /// Currently unknown what this does
+    /// Currently unknown what this does.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Warning: No information is returned.
     ///
-    /// - Returns: Unknown, partially empty data struct
+    /// - Experiment: Try using ``makeServiceRequest(endpoint:methodName:serviceHandle:params:)``
+    ///               if student's district uses this feature to see the response.
+    ///
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
+    ///
+    /// - Returns: Unknown, partially empty data struct.
     public func getClassNotes() async throws -> StudentHWNotes {
         try StudentHWNotes(string: await makeServiceRequest(methodName: .studentHWNotes))
     }
 
-    /// Gets all of student's information stored
+    /// Gets all of student's information stored.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// Most of the information stored is information the student's parent when signing up the
+    /// student for the school year. This includes doctor and dentist information, and
+    /// emergency contacts among other values.
     ///
-    /// - Returns: All student information stored in StudentVue, such as name, birthdate, and address
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
+    ///
+    /// - Returns: All student information stored in StudentVue, such as name, birthdate, and address.
     public func getStudentInfo() async throws -> StudentInfo {
         try StudentInfo(string: await makeServiceRequest(methodName: .studentInfo))
     }
 
-    /// Gets all classes that are being taken along with current day's schedule
+    /// Gets all classes that are being taken along with current day's schedule.
     ///
-    /// - Parameter termIndex: The term to get the schedule for
+    /// - Parameter termIndex: The term to get the schedule for.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
     ///
-    /// - Returns: All necessary class schedule information such as start/end times, room numbers, teachers, etc
+    /// - Returns: All necessary class schedule information such as start/end times,, teachers, etc.
     public func getClassSchedule(termIndex: String? = nil) async throws -> ClassSchedule {
         var params: [String: [String: String]] = [:]
 
@@ -299,31 +384,62 @@ public class StudentVueApi {
         return try ClassSchedule(string: await makeServiceRequest(methodName: .studentClassList, params: params))
     }
 
-    /// Gets information about the school and district
+    /// Gets information about the school and the school's district.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
     ///
-    /// - Returns: School and district representitives with their contact information
+    /// - Returns: School and district staff and representitives with their contact
+    ///            information and position.
     public func getSchoolInfo() async throws -> SchoolInfo {
         try SchoolInfo(string: await makeServiceRequest(methodName: .studentSchoolInfo))
     }
 
-    /// Get a list of report cards. Can be used to get a report card using `getReportCard`
+    /// Get a list of report cards.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// This method can be used with ``getReportCard(documentGU:)`` to retrieve a specific report
+    /// card.
     ///
-    /// - Returns: A list of report card information and document GUs
+    /// - Note: The output of this method has not been validated, proceed with caution.
+    ///
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
+    ///
+    /// - Returns: A list of report card information and document GUs.
     public func listReportCards() async throws -> ReportCards {
         try ReportCards(string: await makeServiceRequest(methodName: .getReportCardInitialData))
     }
 
-    /// Get a report card based on its document GU
+    /// Get a report card based on its report card GU.
     ///
-    /// - Parameter documentGU: The document GU of the report card to access. Can be retrieved with `listReportCards`
+    /// Report card GUs can be retrieved using ``listReportCards()``.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// ```swift
+    /// let reportCards = try await client.api.listReportCards()
     ///
-    /// - Returns: The report card in base64code
+    /// let docGU = reportCards.rcReportingPeriods[0].documentGU
+    ///
+    /// let reportCard = try await client.api.getReportCard(documentGU: docGU)
+    /// ```
+    ///
+    /// The results from this method can be converted into a PDF file by first converting to type
+    /// `Data` and then writing to file.
+    ///
+    /// ```swift
+    /// if let data = Data(base64Encoded: reportCard.base64Code),
+    ///    let url = URL(string: reportCard.fileName) {
+    ///     data.write(to: url)
+    /// }
+    /// ```
+    ///
+    /// - Note: The output of this method has not been validated, proceed with caution.
+    ///
+    /// - Parameter documentGU: The document GU of the report card to access.
+    ///
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
+    ///
+    /// - Returns: The report card in struct containing a Base64 string.
     public func getReportCard(documentGU: String) async throws -> ReportCard {
         try ReportCard(string: await makeServiceRequest(methodName: .getReportCardDocumentData,
                                                         params: ["DocumentGU": ["Value": documentGU]]
@@ -331,22 +447,49 @@ public class StudentVueApi {
         )
     }
 
-    /// Gets a list of document information. Can be used to get a document with `getDocument`
+    /// Gets a list of documents and their metadata.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// This method can be used with ``getDocument(documentGU:)`` to retrieve a specific document.
     ///
-    /// - Returns: A list of document GUs and other relevant document information
+    /// - Note: The output of this method has not been validated, proceed with caution.
+    ///
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession or no response returned
+    ///
+    /// - Returns: A list of document GUs and other relevant document information.
     public func listDocuments() async throws -> StudentDocuments {
         try StudentDocuments(string: await makeServiceRequest(methodName: .getStudentDocumentInitialData))
     }
 
-    /// Gets a document based on the given GU
+    /// Gets a document based on a given document GU.
     ///
-    /// - Parameter documentGU: The document GU of the document to access. Can be retrieved with `listDocuments`
+    /// Docment GUs can be retrieved using ``listDocuments()``.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// ```swift
+    /// let documents = try await client.api.listDocuments()
     ///
-    /// - Returns: The document in base64code and other relevent document information
+    /// let docGU = documents.studentDocumentDatas[0].documentGU
+    ///
+    /// let document = try await client.api.getDocument(documentGU: docGU)
+    /// ```
+    ///
+    /// The results from this method can be converted into a PDF file by first converting to type
+    /// `Data` and then writing to file.
+    ///
+    /// ```swift
+    /// if let data = Data(base64Encoded: document.base64Code),
+    ///    let url = URL(string: document.fileName) {
+    ///     data.write(to: url)
+    /// }
+    /// ```
+    ///
+    /// - Note: The output of this method has not been validated, proceed with caution.
+    ///
+    /// - Parameter documentGU: The document GU of the document to access.
+    ///
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
+    ///
+    /// - Returns: The document in Base64 and other relevent document information.
     public func getDocument(documentGU: String) async throws -> StudentAttachedDocumentData {
         try StudentAttachedDocumentData(string: await makeServiceRequest(methodName: .getContentOfAttachedDoc,
                                                                          params: ["DocumentGU": ["Value": documentGU]]
@@ -354,13 +497,17 @@ public class StudentVueApi {
         )
     }
 
-    /// Gets a message attachment based on its GU
+    /// Gets a message attachment based on its GU.
     ///
-    /// - Parameter smAttachmentGU: The GU of the attachment to get
+    /// - Warning: This method has not been tested. Returning data may be malformed
+    ///            or throw an error.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Parameter smAttachmentGU: The GU of the attachment to get.
     ///
-    /// - Returns: The document in base64code along with its name
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
+    ///
+    /// - Returns: The document in Base64 string along with its name.
     public func getMessageAttachment(smAttachmentGU: String) async throws -> MessageAttachment {
         try MessageAttachment(string: await makeServiceRequest(methodName: .synergyMailGetAttachment,
                                                                params: ["SmAttachmentGU": ["Value": smAttachmentGU]]
@@ -368,16 +515,19 @@ public class StudentVueApi {
         )
     }
 
-    /// Updates a message's status
+    /// Updates a message's status.
+    ///
+    /// - Warning: This method has not been tested and may not return a desired result.
     ///
     /// - Parameters:
-    ///   - messageID: The ID of the message to update
-    ///   - type: The type of message that is to be updated
-    ///   - markAsRead: To mark the message as read or not. This should be kept `true`
+    ///   - messageID: The ID of the message to update.
+    ///   - type: The type of message that is to be updated.
+    ///   - markAsRead: To mark the message as read or not. This should be kept `true`.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
     ///
-    /// - Returns: The raw response of the request in dictionary form
+    /// - Returns: The raw response of the request in dictionary form.
     public func updateMessage(messageID: String, type: String, markAsRead: Bool = true) async throws -> XMLIndexer {
         try XMLHash.parse(soapString: await makeServiceRequest(methodName: .updatePXPMessage, params: ["MessageListing": ["ID": messageID,
                                                                                                                           "Type": type, "MarkAsRead": String(markAsRead)]
@@ -386,17 +536,34 @@ public class StudentVueApi {
         )
     }
 
-    /// Gets the student's health records
+    /// Gets the student's health records.
+    ///
+    /// This method will return immunization records along with health conditions
+    /// and health visitations. Specific health information can be included by enabling
+    /// it through certain `Bool` parameters. By default, only `healthImmunizations` is enabled.
+    ///
+    /// ```swift
+    /// let healthInfo = try await client.api.getHealthInfo(healthConditions: false,
+    ///                                                     healthVisits: true,
+    ///                                                     healthImmunizations: true)
+    /// ```
+    ///
+    /// - Warning: The data structure of `healthConditions` and `healthVisits` are currently
+    ///            unknown and accessing those methods may throw an error or provide an uknown
+    ///            result.
     ///
     /// - Parameters:
-    ///   - healthConditions: Whether to access the health conditions of the student or not. Current data structure unknown
-    ///   - healthVisits: Whether to access the health visits of the student or not. Current data struct unknown
-    ///   - healthImmunizations: Whether to access the immunization records of the student or not
+    ///   - healthConditions: Whether to access the health conditions of the student or not.
+    ///   - healthVisits: Whether to access the health visits of the student or not.
+    ///   - healthImmunizations: Whether to access the immunization records of the student or not.
     ///
-    /// - Throws: `Error` or `StudentVueErrors.emptyResponse`. An error thrown by URLSession or no response returned
+    /// - Throws: `Error` or ``StudentVueErrors/emptyResponse``. An error thrown by URLSession
+    ///           or no response returned.
     ///
-    /// - Returns: The health information of the student
-    public func getHealthInfo(healthConditions: Bool = false, healthVisits: Bool = false, healthImmunizations: Bool = true) async throws -> StudentHealthInfo {
+    /// - Returns: The health information of the student.
+    public func getHealthInfo(healthConditions: Bool = false,
+                              healthVisits: Bool = false,
+                              healthImmunizations: Bool = true) async throws -> StudentHealthInfo {
         try StudentHealthInfo(string: await makeServiceRequest(methodName: .studentHealthInfo,
                                                                params: ["HealthConditions": ["Value": String(healthConditions)],
                                                                         "HealthVisits": ["Value": String(healthVisits)],

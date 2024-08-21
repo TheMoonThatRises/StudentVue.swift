@@ -8,7 +8,12 @@
 import Foundation
 
 extension StudentVueScraper {
-    class ParseDate {
+    internal class ParseDate {
+        /// Reformats date to `M/d/yyyy`.
+        ///
+        /// - Parameter date: Input date to reformat.
+        ///
+        /// - Returns: The reformatted date or `nil` if unsuccessful.
         static public func getDate(date: String) -> Date? {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "M/d/yyyy"

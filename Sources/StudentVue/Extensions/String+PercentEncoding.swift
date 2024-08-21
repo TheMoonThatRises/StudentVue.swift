@@ -1,6 +1,6 @@
 //
 //  String+PercentEncoding.swift
-//
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 3/9/23.
 //
@@ -8,13 +8,12 @@
 import Foundation
 
 extension String {
-    /// Percent encode if possible
+    /// Percent encode `String.self` for an input of valid characters if possible.
     ///
-    /// - Parameters:
-    ///    - withAllowedCharacters: Set of characters to encode
+    /// - Parameter withAllowedCharacters: Set of characters to encode.
     ///
-    /// - Returns: String percent encoded with character set
-    func percentEncoding(withAllowedCharacters: CharacterSet) -> String {
+    /// - Returns: String percent encoded with character set.
+    internal func percentEncoding(withAllowedCharacters: CharacterSet) -> String {
         self.addingPercentEncoding(withAllowedCharacters: withAllowedCharacters) ?? self
     }
 }

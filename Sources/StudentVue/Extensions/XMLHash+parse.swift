@@ -1,6 +1,6 @@
 //
 //  XMLHash+parse.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/14/23.
 //
@@ -9,16 +9,27 @@ import Foundation
 import SWXMLHash
 
 public extension XMLHash {
-    static fileprivate let errorAttributes = ["ERROR_MESSAGE", "errorMessage"]
+    /// Attributes SOAP messages include when an error has occured.
+    static private let errorAttributes = ["ERROR_MESSAGE", "errorMessage"]
 
-    /// Wrapper of XMLHash parse function
+    /// Wrapper of XMLHash parse function.
     ///
-    /// - Parameter soapString: The SOAP XML to parse
+    /// This function loops through all of the first layer of children in the requests looking
+    /// for an attribute that is defined in `errorAttributes`. This attribute is then read and
+    /// throws an error. ``StudentVueApi/StudentVueErrors/invalidCredentials`` is the only specific
+    /// error message thrown. Other messages are thrown through a generic
+    /// ``StudentVueApi/StudentVueErrors/soapError(_:)`` with the error message
+    /// as the string value.
     ///
-    /// - Throws: `StudentVueErrors.soapError` An error was returned by the StudentVue API
+    /// - Note: This function may be ineffecient as it loops through all of the first layer
+    ///         of the returned XML.
     ///
-    /// - Returns: An XMLIndexer with only the body of the SOAP response
-    class func parse(soapString: String) throws -> XMLIndexer {
+    /// - Parameter soapString: The SOAP XML to parse.
+    ///
+    /// - Throws: ``StudentVueErrors/soapError`` when an error was returned by StudentVue's API.
+    ///
+    /// - Returns: An XMLIndexer with only the body of the SOAP response.
+    static internal func parse(soapString: String) throws -> XMLIndexer {
         let request = parse(soapString)["soap:Envelope"]["soap:Body"]["ProcessWebServiceRequestMultiWebResponse"]["ProcessWebServiceRequestMultiWebResult"]
 
         do {

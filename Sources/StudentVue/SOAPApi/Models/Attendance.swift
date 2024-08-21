@@ -1,6 +1,6 @@
 //
 //  Attendance.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/13/23.
 //
@@ -10,15 +10,34 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct AbsencePeriod: XMLObjectDeserialization {
+        /// The period the student was absent.
         public var period: Int
+
+        /// Unknown.
         public var name: String
+
+        /// The reason the student was absent.
         public var reason: String
+
+        /// The course the student was absent from.
         public var course: String
+
+        /// The teacher of the class the student was absent from.
         public var teacher: String
+
+        /// The email of the teacher.
         public var teacherEmail: String
+
+        /// Unknown.
         public var iconName: String
+
+        /// The name of the school.
         public var schoolName: String
+
+        /// The GU of the teacher of the class.
         public var teacherGU: String
+
+        /// The GU year the absence occured.
         public var orgYearGU: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> AbsencePeriod {
@@ -36,12 +55,25 @@ extension StudentVueApi {
     }
 
     public struct Absence: XMLObjectDeserialization {
+        /// The date of the absence.
         public var date: Date
+
+        /// The reason of the absence.
         public var reason: String
+
+        /// The note of the absence.
         public var note: String
+
+        /// Unkown.
         public var dailyIconName: String
+
+        /// Unknown.
         public var codeAllDayReasonType: String
+
+        /// Unknown.
         public var codeAllDayDescription: String
+
+        /// List of periods the student was absent from.
         public var absencePeriods: [AbsencePeriod]
 
         public static func deserialize(_ element: XMLIndexer) throws -> Absence {
@@ -66,7 +98,10 @@ extension StudentVueApi {
     }
 
     public struct ConcurrentSchoolsList: XMLObjectDeserialization {
+        /// Name of the school the student is going to in addition to their primary school.
         public var concurrentSchoolName: String
+
+        /// GU of the year for the concurrent school.
         public var concurrentOrgYearGU: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> ConcurrentSchoolsList {
@@ -76,17 +111,40 @@ extension StudentVueApi {
     }
 
     public struct Attendance: XMLObjectDeserialization {
+        /// Unkown.
         public var type: String
+
+        /// Unknown.
         public var startPeriod: Int
+
+        /// Unkown.
         public var endPeriod: Int
+
+        /// Unkown.
         public var periodCount: Int
+
+        /// Name of the school.
         public var schoolName: String
+
+        /// List of all absences.
         public var absences: [Absence]
+
+        /// List of excused absences.
         public var totalExcused: [AttendancePeriodTotal]
+
+        /// List of tardies.
         public var totalTardies: [AttendancePeriodTotal]
+
+        /// List of unexcused absences.
         public var totalUnexcused: [AttendancePeriodTotal]
+
+        /// List of excused absences due to an activity.
         public var totalActivities: [AttendancePeriodTotal]
+
+        /// List of unexcused tardies.
         public var totalUnexcusedTardies: [AttendancePeriodTotal]
+
+        /// List of schools the student is concurrently attending.
         public var concurrentSchoolsLists: [ConcurrentSchoolsList]
 
         public static func deserialize(_ element: XMLIndexer) throws -> Attendance {

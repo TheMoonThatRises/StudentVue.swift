@@ -7,20 +7,39 @@
 
 import Foundation
 extension StudentVueScraper {
+    /// Custom errors that methods within ``StudentVueScraper`` can throw.
     public enum ScraperErrors: Error {
+        /// Returning data is empty.
         case emptyData
+
+        /// The password inputted is invalid.
         case incorrectPassword
+
+        /// The username inputted is invalid.
         case invalidUsername
+
+        /// No password provided.
         case noPassword
+
+        /// No username provided.
         case noUsername
+
+        /// No credentials provided.
         case noCredentials
+
+        /// Website did not return HTML code 200.
         case responseNot200
+
+        /// HTML returned was unable to be parsed.
         case invalidWebsiteHTML
+
+        /// An unknown error has occured.
         case unknown(message: String?)
     }
 }
 
 extension StudentVueScraper.ScraperErrors: LocalizedError {
+    /// Provides localizations for custom error messages.
     public var errorDescription: String? {
         switch self {
         case .emptyData:

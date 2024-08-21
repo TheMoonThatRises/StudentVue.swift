@@ -1,6 +1,6 @@
 //
 //  ClassSchedule.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/13/23.
 //
@@ -10,21 +10,52 @@ import SWXMLHash
 
 extension StudentVueApi {
     public struct ClassScheduleInfo: XMLObjectDeserialization {
+        /// Class period.
         public var period: String
+
+        /// Name of the class.
         public var className: String
+
+        /// URL for the class provided by the teacher (or when linked to Google Classroom).
         public var classURL: String
+
+        /// The start time of the class.
         public var startTime: Date
+
+        /// The end time of the class.
         public var endTime: Date
+
+        /// Name of the teacher.
         public var teacherName: String
+
+        /// Unkown.
         public var teacherURL: String
+
+        /// The room name in the school.
         public var roomName: String
+
+        /// The email of the teacher.
         public var teacherEmail: String
+
+        /// Unkown.
         public var emailSubject: String
+
+        /// The GU of the teacher.
         public var teacherGU: String
+
+        /// Unkown.
         public var startDate: Date
+
+        /// Unkown.
         public var endDate: Date
+
+        /// Unkown.
         public var sectionGU: String
+
+        /// Unkown.
         public var hideClassStartEndTime: Bool
+
+        /// Unkown.
         public var attendanceCode: String? // TODO: Find data type/structure
 
         public static func deserialize(_ element: XMLIndexer) throws -> ClassScheduleInfo {
@@ -47,8 +78,13 @@ extension StudentVueApi {
     }
 
     public struct SchoolScheduleInfo: XMLObjectDeserialization {
+        /// Name of the school.
         public var schoolName: String
+
+        /// Name of the bell schedule.
         public var bellScheduleName: String
+
+        /// List of classes the student is taking.
         public var classes: [ClassScheduleInfo]
 
         public static func deserialize(_ element: XMLIndexer) throws -> SchoolScheduleInfo {
@@ -59,7 +95,10 @@ extension StudentVueApi {
     }
 
     public struct TodayScheduleInfo: XMLObjectDeserialization {
+        /// Current date.
         public var date: Date
+
+        /// List of classes the student is taking today.
         public var schoolInfos: [SchoolScheduleInfo]
 
         public static func deserialize(_ element: XMLIndexer) throws -> TodayScheduleInfo {
@@ -73,13 +112,28 @@ extension StudentVueApi {
     }
 
     public struct ClassListSchedule: XMLObjectDeserialization {
+        /// Class period.
         public var period: Int
+
+        /// Title of the class.
         public var courseTitle: String
+
+        /// Room name in the school.
         public var roomName: String
+
+        /// The teacher of the class.
         public var teacher: String
+
+        /// The email of the teacher.
         public var teacherEmail: String
+
+        /// Unkown.
         public var sectionGU: String
+
+        /// The GU of the teacher.
         public var teacherGU: String
+
+        /// Unkown.
         public var additionalStaffInformationXMLs: [AdditionalStaffInformationXML]?
 
         public static func deserialize(_ element: XMLIndexer) throws -> ClassListSchedule {
@@ -94,6 +148,7 @@ extension StudentVueApi {
     }
 
     public struct TermDefCodesSchedule: XMLObjectDeserialization {
+        /// The term name (e.x. `S1`, `S2`, `YR`).
         public var termDefName: String
 
         public static func deserialize(_ element: XMLIndexer) throws -> TermDefCodesSchedule {
@@ -102,12 +157,25 @@ extension StudentVueApi {
     }
 
     public struct TermListSchedule: XMLObjectDeserialization {
+        /// Current term.
         public var termIndex: Int
+
+        /// ``termIndex`` + 1.
         public var termCode: Int
+
+        /// Name of the current term.
         public var termName: String
+
+        /// Begin date of the term.
         public var beginDate: Date
+
+        /// End date of the term.
         public var endDate: Date
+
+        /// GU code for the school's year term.
         public var schoolYearTermCodeGU: String
+
+        /// List of term definitions.
         public var termDefCodes: [TermDefCodesSchedule]
 
         public static func deserialize(_ element: XMLIndexer) throws -> TermListSchedule {
@@ -122,14 +190,31 @@ extension StudentVueApi {
     }
 
     public struct ClassListing: XMLObjectDeserialization {
+        /// The email of the teacher.
         public var teacherEmail: String
+
+        /// Unkown.
         public var excludePVUE: Bool
+
+        /// Name of the teacher.
         public var teacher: String
+
+        /// Period of the class.
         public var period: Int
+
+        /// Name of the class.
         public var courseTitle: String
+
+        /// GU of the teacher.
         public var teacherStaffGU: String
+
+        /// Unkown.
         public var sectionGU: String
+
+        /// Room name in the school.
         public var roomName: String
+
+        /// Unkown.
         public var additionalStaffInformationXMLs: [AdditionalStaffInformationXML]?
 
         public static func deserialize(_ element: XMLIndexer) throws -> ClassListing {
@@ -145,11 +230,22 @@ extension StudentVueApi {
     }
 
     public struct ConcurrentSchoolStudentClassSchedule: XMLObjectDeserialization {
+        /// Term index name.
         public var conSchTermIndexName: String
+
+        /// Unkown.
         public var conSchOrgYearGU: String
+
+        /// Term index.
         public var conSchTermIndex: Int
+
+        /// Name of the concurrent school.
         public var schoolName: String
+
+        /// Error message.
         public var conSchErrorMessage: String
+
+        /// List of classes the student is taking at the concurrent school.
         public var conSchClassLists: [ClassListing]
 
         public static func deserialize(_ element: XMLIndexer) throws -> ConcurrentSchoolStudentClassSchedule {
@@ -163,13 +259,28 @@ extension StudentVueApi {
     }
 
     public struct ClassSchedule: XMLObjectDeserialization {
+        /// Current term index.
         public var termIndex: Int
+
+        /// Current term index name.
         public var termIndexName: String
+
+        /// Error message.
         public var errorMessage: String
-        public var includeAdditionaWhenEmailingTeachers: Bool
+
+        /// Unkown.
+        public var includeAdditionalWhenEmailingTeachers: Bool
+
+        /// Today's schedule. `nil` when today is not a school day.
         public var todayScheduleInfo: TodayScheduleInfo?
+
+        /// List of classes taken by the student.
         public var classLists: [ClassListSchedule]
+
+        /// List of terms.
         public var termLists: [TermListSchedule]
+
+        /// Schedule of the student if they are attending multiple schools.
         public var concurrentSchoolStudentClassSchedules: [ConcurrentSchoolStudentClassSchedule]
 
         public static func deserialize(_ element: XMLIndexer) throws -> ClassSchedule {
@@ -178,7 +289,7 @@ extension StudentVueApi {
             return ClassSchedule(termIndex: try schedule.value(ofAttribute: "TermIndex"),
                                  termIndexName: try schedule.value(ofAttribute: "TermIndexName"),
                                  errorMessage: try schedule.value(ofAttribute: "ErrorMessage"),
-                                 includeAdditionaWhenEmailingTeachers: try schedule.value(ofAttribute: "IncludeAdditionalStaffWhenEmailingTeachers"),
+                                 includeAdditionalWhenEmailingTeachers: try schedule.value(ofAttribute: "IncludeAdditionalStaffWhenEmailingTeachers"),
                                  todayScheduleInfo: try? schedule["TodayScheduleInfoData"].value(),
                                  classLists: try schedule["ClassLists"]["ClassListing"].value(),
                                  termLists: try schedule["TermLists"]["TermListing"].value(),

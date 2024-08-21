@@ -7,39 +7,75 @@
 
 import Foundation
 
+/// Class representing StudentVue api access instance.
+///
+/// Contains access points for both the ``StudentVueApi`` and ``StudentVueScraper``, which can be
+/// used to interact with the StudentVue api or website.
+///
+/// Information required to login and access information can set using the
+/// ``init(domain:username:password:)`` initializer. Inputted credentials can then be checked with
+/// ``checkCredentials()``.
+///
+/// ```swift
+/// let client = StudentVue(domain: "test.edupoint.com",
+///                         username: "970011111",
+///                         password: "password")
+///
+/// do {
+///     let isValidCredentials = try await client.checkCredentials()
+/// } catch {
+///     fatalError(String(describing: error))
+/// }
+/// ```
 public class StudentVue {
-    // Uses the official StudentVue api endpoint
+    /// Official StudentVue api endpoint.
     public private(set) var api: StudentVueApi
-    // Scrapes the StudentVue website
+    /// StudentVue website scraper.
     public private(set) var scraper: StudentVueScraper
-    // Client domain for other files to use
+    /// StudentVue connection domain.
     public private(set) static var domain = ""
 
-    /// Initializes a new StudentVue client with user credientials
+    /// Initializes a new StudentVue client with user credientials.
+    ///
+    /// This initializers also initialize and store ``StudentVueApi`` and ``StudentVueScraper``.
     ///
     /// - Parameters:
-    ///   - domain: Domain of the school that uses StudentVue. Should be something like `something.edupoint.com`
-    ///   - username: The username of the student's information to access
-    ///   - password: The password of the student's information to access
+    ///   - domain: Domain of StudentVue the school uses.
+    ///   - username: The username of the account.
+    ///   - password: The password of the account.
     public init(domain: String, username: String, password: String) {
         StudentVue.domain = domain
         self.api = StudentVueApi(domain: domain, username: username, password: password)
         self.scraper = StudentVueScraper(domain: domain, username: username, password: password)
     }
 
-    /// Retrieves account details as a hash
+    /// Retrieves account details as a hash.
     ///
-    /// - Returns: Hash of username, password, and domain
+    /// Since the username and password are inaccessible once set, this provides a way to check for
+    /// account similarities.
+    ///
+    /// The hash is created by joining the username, password, and domain and using `SHA256` to
+    /// generate a one-way hash.
+    ///
+    /// - Returns: Hash of joined username, password, and domain.
     public func getAccountHash() -> String {
         return api.getAccountHash()
     }
 
-    /// Updates the credentials of the user
+    /// Updates the credentials of the user.
+    ///
+    /// As a convience, the domain, username, and password can be updated individually. This method
+    /// will cascade down and update the credentials for ``StudentVueApi`` and
+    /// ``StudentVueScraper``.
+    ///
+    /// ```swift
+    /// client.updateCredentials(password: "my new password")
+    /// ```
     ///
     /// - Parameters:
-    ///   - domain: The new domain
-    ///   - username: The new username
-    ///   - password: The new password
+    ///   - domain: The new domain.
+    ///   - username: The new username.
+    ///   - password: The new password.
     public func updateCredentials(domain: String? = nil, username: String? = nil, password: String? = nil) {
         if let domain = domain {
             StudentVue.domain = domain
@@ -49,11 +85,18 @@ public class StudentVue {
         self.scraper.updateCredentials(domain: domain, username: username, password: password)
     }
 
-    ///  Checks validity of user credentials quickly
+    /// Checks validity of user credentials.
     ///
-    ///  - Throws: `Error` some other error has occured when api request was sent
+    /// This method tests the validity of the combination of username, password, and domain by
+    /// attempting to access the student's uploaded sound file. The API will return a response with
+    /// an error code that is then caught and returned as a boolean here.
     ///
-    ///  - Returns: Success or not
+    /// Accessing the student's sound file is the fastest verification method, with only a 0.7 second
+    /// wait time.
+    ///
+    /// - Throws: `Error` some other error has occured when api request was sent/
+    ///
+    /// - Returns: If the credentials are valid.
     public func checkCredentials() async throws -> Bool {
         return try await api.checkCredentials()
     }

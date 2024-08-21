@@ -1,6 +1,6 @@
 //
 //  NavigationData.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 3/16/23.
 //
@@ -9,7 +9,7 @@ import Foundation
 import SwiftSoup
 
 extension StudentVueScraper {
-    struct NavigationDataItem: Decodable {
+    internal struct NavigationDataItem: Decodable {
         var moduleIcon: String
         var activeClass: String
         var url: String
@@ -19,7 +19,7 @@ extension StudentVueScraper {
         var enabled: Bool
     }
 
-    struct NavigationDataStudent: Decodable {
+    internal struct NavigationDataStudent: Decodable {
         var agu: String
         var name: String
         var sisNumber: String
@@ -29,13 +29,14 @@ extension StudentVueScraper {
         var current: Bool
     }
 
-    struct NavigationData: Decodable {
+    internal struct NavigationData: Decodable {
         var items: [NavigationDataItem]
         var students: [NavigationDataStudent]
     }
 }
 
 extension StudentVueScraper.NavigationData {
+    /// Parses scraped StudentVue website for navigation data.
     init?(html: String) throws {
         let doc = try SwiftSoup.parse(html)
 

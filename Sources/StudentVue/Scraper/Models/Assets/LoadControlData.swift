@@ -1,6 +1,6 @@
 //
 //  LoadControlData.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 3/19/23.
 //
@@ -8,7 +8,7 @@
 import Foundation
 
 extension StudentVueScraper {
-    struct LoadControlParams: Decodable {
+    internal struct LoadControlParams: Decodable {
         enum CodingKeys: String, CodingKey {
             case controlName = "ControlName"
             case hideHeader = "HideHeader"
@@ -18,12 +18,13 @@ extension StudentVueScraper {
         var hideHeader: Bool
     }
 
-    struct LoadControlFocusArgs: Codable {
+    internal struct LoadControlFocusArgs: Codable {
         enum CodingKeys: String, CodingKey {
             case agu = "AGU"
             case orgYearGU = "OrgYearGU"
-            case viewName, studentGU, schoolID, classID, markPeriodGU, gradePeriodGU, subjectID, teacherID, assignmentID,
-                 standardIdentifier, gradingPeriodGroup
+            case viewName, studentGU, schoolID, classID,
+                 markPeriodGU, gradePeriodGU, subjectID, teacherID,
+                 assignmentID, standardIdentifier, gradingPeriodGroup
         }
 
         var viewName: String?
@@ -41,7 +42,7 @@ extension StudentVueScraper {
         var gradingPeriodGroup: String?
     }
 
-    struct LoadControlData: Decodable {
+    internal struct LoadControlData: Decodable {
         enum CodingKeys: String, CodingKey {
             case loadParams = "LoadParams"
             case focusArgs = "FocusArgs"
@@ -51,12 +52,12 @@ extension StudentVueScraper {
         var focusArgs: LoadControlFocusArgs
     }
 
-    struct SendableLoadControlRequest: Encodable {
+    internal struct SendableLoadControlRequest: Encodable {
         var control: String
         var parameters: LoadControlFocusArgs
     }
 
-    struct SendableLoadControlData: Encodable {
+    internal struct SendableLoadControlData: Encodable {
         var request: SendableLoadControlRequest
     }
 }

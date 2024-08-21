@@ -9,7 +9,16 @@ import Foundation
 import SwiftSoup
 
 extension StudentVueScraper {
-    public struct ErrorPage {
+    internal struct ErrorPage {
+        /// Parses scraped HTML page from StudentVue checks for errors.
+        ///
+        /// This method checks for elements containing the id `USER_ERROR` or
+        /// `ctl00_MainContent_ERROR`, which are in the HTML when errors occur.
+        ///
+        /// - Parameter html: Scraped HTML page from StudentVue.
+        ///
+        /// - Throws: Either ``StudentVueScraper/ScraperErrors/unknown(message:)`` or
+        ///           ``StudentVueScraper/ScraperErrors/invalidUsername`` depending on the error.
         public static func parse(html: String) throws {
             let doc = try SwiftSoup.parse(html)
 

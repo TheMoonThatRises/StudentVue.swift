@@ -1,6 +1,6 @@
 //
 //  StudentHealthInfo.swift
-//  
+//  StudentVue
 //
 //  Created by TheMoonThatRises on 4/15/23.
 //
@@ -9,6 +9,7 @@ import Foundation
 import SWXMLHash
 
 extension StudentVueApi {
+    /// Undocumented API.
     public struct HealthVisitListing: XMLObjectDeserialization {
         // TODO: Find data structure
 
@@ -17,6 +18,7 @@ extension StudentVueApi {
         }
     }
 
+    /// Undocumented API.
     public struct HealthConditionListing: XMLObjectDeserialization {
         // TODO: Find data structure
 
@@ -25,12 +27,25 @@ extension StudentVueApi {
         }
     }
 
+    /// Immunization records of the student submitted by their parent when registering
+    /// their student through StudentVue.
     public struct HealthImmunizationListing: XMLObjectDeserialization {
+        /// GU of the immunization item.
         public var accessGU: String
+
+        /// If the student is compliant with the immunization.
         public var compliant: Bool
+
+        /// If the student needs to take the immunization.
         public var compliantMessage: String
+
+        /// Name of the immunization shot.
         public var name: String
+
+        /// Number of required doses.
         public var numReqDoses: Int
+
+        /// Dates the student was immunized.
         public var immunizationDates: [Date]
 
         public static func deserialize(_ element: XMLIndexer) throws -> HealthImmunizationListing {
@@ -44,8 +59,13 @@ extension StudentVueApi {
     }
 
     public struct StudentHealthInfo: XMLObjectDeserialization {
+        /// List of student health visits.
         public var healtVisitListings: [HealthVisitListing]
+
+        /// List of student health conditions.
         public var healthConditionListings: [HealthConditionListing]
+
+        /// List of student immunization records.
         public var healthImmunizationListing: [HealthImmunizationListing]
 
         public static func deserialize(_ element: XMLIndexer) throws -> StudentHealthInfo {
