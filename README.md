@@ -9,7 +9,7 @@ Checkout this project in action here: [**PortalBook** by TheMoonThatRises](https
 
 ## Documentation
 
-Read the documentation here: [https://themoonthatrises.github.io/documentation/studentvue/](https://themoonthatrises.github.io/documentation/studentvue/)
+Read the documentation here: [https://themoonthatrises.github.io/documentation/studentvue/](https://themoonthatrises.github.io/projects/documentation/studentvue/)
 
 ## Installation
 
