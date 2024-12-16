@@ -9,12 +9,12 @@ Checkout this project in action here: [**PortalBook** by TheMoonThatRises](https
 
 ## Documentation
 
-Read the documentation here: [https://themoonthatrises.github.io/documentation/studentvue/](https://themoonthatrises.github.io/projects/documentation/studentvue/)
+Read the documentation here: [https://plduanm.com/projects/documentation/studentvue/](https://plduanm.com/projects/documentation/studentvue/)
 
 ## Installation
 
 ```swift
-.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.2.0")
+.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.3.1")
 ```
 
 ## Basic usage
@@ -85,5 +85,5 @@ let hash = client.getAccountHash()
 
 ## Library Used
 
-- [SWXMLHash](https://github.com/drmohundro/SWXMLHash)
-- [SwiftSoup](https://github.com/scinfu/SwiftSoup)
+1. [SWXMLHash](https://github.com/drmohundro/SWXMLHash) - Simple XML parsing in Swift
+1. [SwiftSoup](https://github.com/scinfu/SwiftSoup) - SwiftSoup: Pure Swift HTML Parser, with best of DOM, CSS, and jquery (Supports Linux, iOS, Mac, tvOS, watchOS)
