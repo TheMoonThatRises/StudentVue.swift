@@ -2,7 +2,7 @@
 //  ErrorPage.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 3/15/23.
+//  Created by Peter Duanmu on 3/15/23.
 //
 
 import Foundation

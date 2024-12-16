@@ -2,7 +2,7 @@
 //  AccessPoints.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 8/20/24.
+//  Created by Peter Duanmu on 8/20/24.
 //
 
 import Foundation

@@ -2,7 +2,7 @@
 //  StudentVueApi.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 4/3/23.
+//  Created by Peter Duanmu on 4/3/23.
 //
 
 import Foundation

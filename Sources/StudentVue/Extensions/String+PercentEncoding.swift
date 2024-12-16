@@ -2,7 +2,7 @@
 //  String+PercentEncoding.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 3/9/23.
+//  Created by Peter Duanmu on 3/9/23.
 //
 
 import Foundation

@@ -2,7 +2,7 @@
 //  StudentHealthInfo.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 4/15/23.
+//  Created by Peter Duanmu on 4/15/23.
 //
 
 import Foundation

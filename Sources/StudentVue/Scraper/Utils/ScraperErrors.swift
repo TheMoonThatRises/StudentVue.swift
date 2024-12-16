@@ -2,7 +2,7 @@
 //  ScraperErrors.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 3/10/23.
+//  Created by Peter Duanmu on 3/10/23.
 //
 
 import Foundation

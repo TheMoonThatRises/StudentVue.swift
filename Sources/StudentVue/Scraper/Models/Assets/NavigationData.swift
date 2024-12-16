@@ -2,7 +2,7 @@
 //  NavigationData.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 3/16/23.
+//  Created by Peter Duanmu on 3/16/23.
 //
 
 import Foundation

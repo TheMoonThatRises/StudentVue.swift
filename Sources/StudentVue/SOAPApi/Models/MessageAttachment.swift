@@ -2,7 +2,7 @@
 //  MessageAttachment.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 4/14/23.
+//  Created by Peter Duanmu on 4/14/23.
 //
 
 import Foundation

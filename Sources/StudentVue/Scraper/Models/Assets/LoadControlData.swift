@@ -2,7 +2,7 @@
 //  LoadControlData.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 3/19/23.
+//  Created by Peter Duanmu on 3/19/23.
 //
 
 import Foundation

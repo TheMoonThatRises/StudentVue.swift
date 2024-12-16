@@ -2,7 +2,7 @@
 //  ScraperCourseHistory.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 8/17/24.
+//  Created by Peter Duanmu on 8/17/24.
 //
 
 import Foundation

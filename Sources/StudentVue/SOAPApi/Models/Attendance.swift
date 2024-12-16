@@ -2,7 +2,7 @@
 //  Attendance.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 4/13/23.
+//  Created by Peter Duanmu on 4/13/23.
 //
 
 import Foundation

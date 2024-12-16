@@ -2,7 +2,7 @@
 //  Date+stringToDate.swift
 //  StudentVue
 //
-//  Created by TheMoonThatRises on 4/16/23.
+//  Created by Peter Duanmu on 4/16/23.
 //
 
 import Foundation
