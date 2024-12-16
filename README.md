@@ -14,7 +14,7 @@ Read the documentation here: [https://plduanm.com/projects/documentation/student
 ## Installation
 
 ```swift
-.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "0.3.1")
+.package(url: "https://github.com/TheMoonThatRises/StudentVue.swift", from: "1.0.0")
 ```
 
 ## Basic usage
